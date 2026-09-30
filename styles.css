@@ -381,7 +381,7 @@ button {
 .mac-window-body {
 	display: grid;
 	grid-template-columns: 165px 1fr;
-	min-height: 610px;
+	height: 610px;
 }
 .mac-sidebar {
 	padding: 22px 12px;
@@ -573,7 +573,13 @@ button {
 	white-space: nowrap;
 }
 .mac-content {
+	min-height: 0;
+	overflow: hidden;
 	padding: 28px;
+}
+
+#admin-content {
+	min-height: 554px;
 }
 .management-header {
 	display: flex;
@@ -769,6 +775,24 @@ button {
 .phone {
 	position: relative;
 }
+.phone::before,
+.phone::after {
+	position: absolute;
+	left: -9px;
+	width: 3px;
+	border-radius: 3px 0 0 3px;
+	background: #334155;
+	content: "";
+}
+.phone::before {
+	top: 150px;
+	height: 58px;
+	box-shadow: 0 74px 0 #334155;
+}
+.phone::after {
+	top: 218px;
+	height: 38px;
+}
 @keyframes launch-enter {
 	from {
 		opacity: 0;
@@ -835,14 +859,40 @@ button {
 	width: min(402px, 26vw);
 	height: min(874px, 92vh);
 	overflow: hidden;
-	border: 9px solid #111827;
-	border-radius: 46px;
-	background: var(--bg);
-	box-shadow: 0 28px 70px #0f172a33;
+	border: 7px solid #020617;
+	border-radius: 52px;
+	background: #fff;
+	box-shadow:
+		0 28px 70px #0f172a33,
+		inset 0 0 0 1px #64748b;
 }
 .phone-bar {
-	height: 26px;
-	background: #111827;
+	position: relative;
+	height: 30px;
+	background: #fff;
+}
+.phone-bar::before {
+	position: absolute;
+	top: 7px;
+	left: 50%;
+	width: 104px;
+	height: 20px;
+	border-radius: 999px;
+	background: #000;
+	box-shadow: inset 0 0 0 1px #1e293b;
+	content: "";
+	transform: translateX(-50%);
+}
+.phone-bar::after {
+	position: absolute;
+	top: 13px;
+	left: calc(50% + 29px);
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: #172554;
+	box-shadow: 0 0 5px #2563eb;
+	content: "";
 }
 .app {
 	height: calc(100% - 26px);
@@ -1384,6 +1434,7 @@ input:focus, textarea:focus {
 	}
 	.mac-window-body {
 		grid-template-columns: 1fr;
+		height: auto;
 	}
 	.mac-sidebar {
 		display: none;
@@ -1409,5 +1460,9 @@ input:focus, textarea:focus {
 		border: 0;
 		border-radius: 0;
 		box-shadow: none;
+	}
+	.phone::before,
+	.phone::after {
+		display: none;
 	}
 }
