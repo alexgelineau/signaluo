@@ -734,6 +734,10 @@ function bindWizard() {
 function updateWizardNext() {
 	const next = app.querySelector('[data-action="next"]');
 
+	if (next && step === 2) {
+		next.disabled = !draft.category;
+	}
+
 	if (next && step === 3) {
 		next.disabled = !(draft.title && draft.description && draft.location);
 	}
