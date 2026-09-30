@@ -42,19 +42,15 @@
       .site.entering { animation: app-enter .7s both cubic-bezier(.2,.8,.2,1); }
       @keyframes app-enter { from { opacity: 0; transform: translateY(24px) scale(.98); } to { opacity: 1; transform: none; } }
       .site { min-height: 100vh; display: grid; grid-template-columns: 70% 30%; align-items: center; padding: 0 2vw; }
-      .launch-screen { position: absolute; inset: 26px 0 0; z-index: 2; display: flex; flex-direction: column; justify-content: center; padding: 28px 22px; background: var(--bg); animation: launch-enter .8s both cubic-bezier(.2,.8,.2,1); }
+      .launch-screen { display: flex; flex-direction: column; justify-content: center; min-height: 100%; padding: 28px 22px; animation: launch-enter .8s both cubic-bezier(.2,.8,.2,1); }
       .launch-mark { display: grid; place-items: center; width: 62px; height: 62px; margin-bottom: 22px; border-radius: 20px; background: var(--ink); color: #facc15; font-size: 2.3rem; box-shadow: 0 14px 28px #0f172a2b; }
       .launch-screen .eyebrow { margin-bottom: 14px; font-size: .58rem; }
       .launch-screen h1 { max-width: 280px; margin: 0; font-size: 2.45rem; line-height: .96; letter-spacing: -.08em; }
       .launch-screen p { max-width: 290px; margin: 20px 0; color: var(--muted); font-size: .84rem; line-height: 1.55; }
       .launch-button { display: inline-flex; align-items: center; justify-content: space-between; gap: 14px; width: 100%; border: 0; border-radius: 13px; padding: 13px 14px 13px 16px; background: var(--ink); color: #fff; font-size: .82rem; font-weight: 750; box-shadow: 0 12px 24px #0f172a2b; }
       .launch-button span { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: #fff; color: var(--ink); font-size: 1.1rem; }
-      .phone { position: relative; transition: opacity .45s ease, transform .45s ease; }
-      .site:not(.app-started) .app { opacity: 0; pointer-events: none; }
-      .app-started .launch-screen { animation: launch-leave .45s forwards cubic-bezier(.7,0,.84,0); pointer-events: none; }
-      .app-started .phone { animation: app-enter .65s both cubic-bezier(.2,.8,.2,1); }
+      .phone { position: relative; }
       @keyframes launch-enter { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
-      @keyframes launch-leave { to { opacity: 0; transform: translateY(-18px) scale(.97); } }
       .intro { display: none; }
       .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.15rem; letter-spacing: -.03em; }
       .brand-mark { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 14px; background: var(--ink); color: #facc15; font-size: 1.4rem; box-shadow: 0 8px 20px #0f172a2b; }

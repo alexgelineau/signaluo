@@ -14,7 +14,7 @@
         { id: 2, title: "Lampadaire en panne", description: "Le lampadaire ne s’allume plus depuis 3 jours.", category: "Éclairage", date: today, status: "Traité", location: "47.4712° N, 0.5513° W" }
       ];
       let reports = JSON.parse(localStorage.getItem("signaluo-reports") || "null") || seed;
-      let manager = false, screen = "wizard", step = 1, mapInstance = null, mapMarker = null, draft = { photo: false, category: "", location: "", title: "", description: "", anonymous: true, lastName: "", firstName: "", email: "", phone: "" };
+      let manager = false, screen = "wizard", step = 0, mapInstance = null, mapMarker = null, draft = { photo: false, category: "", location: "", title: "", description: "", anonymous: true, lastName: "", firstName: "", email: "", phone: "" };
       const app = document.querySelector("#app");
       const esc = value => String(value).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;" }[c]));
       function save() { localStorage.setItem("signaluo-reports", JSON.stringify(reports)); }
@@ -56,6 +56,10 @@
         app.querySelectorAll(".report").forEach(card => card.addEventListener("click", () => showReportDetails(Number(card.dataset.id))));
       }
       function renderWizard() {
+        if (step === 0) {
+          app.innerHTML = `<div class="screen launch-screen" aria-labelledby="launch-title"><div class="launch-mark">⌖</div><span class="eyebrow">ESPACE CITOYEN</span><h1 id="launch-title">Prêt à agir pour votre ville ?</h1><p>Lancez l’application Signaluo pour signaler rapidement un problème près de chez vous.</p><button class="launch-button" type="button" data-action="launch">Lancer l’application <span>→</span></button></div>`;
+          return;
+        }
         const titles = ["Photo du problème", "Type de problème", "Détails & localisation", "Envoi du signalement"];
         app.innerHTML = `<div class="screen"><div class="topbar">${step > 1 ? '<button class="icon-btn" data-action="back">←</button>' : '<span></span>'}<h2>${step}. ${titles[step - 1]}</h2><button class="icon-btn" data-action="history" title="Historique">↻</button></div><div class="steps">${[1,2,3,4].map(n => `<span class="step ${n <= step ? "active" : ""}"></span>`).join("")}</div>${wizardContent()}</div>`;
         bindWizard();
@@ -154,7 +158,8 @@
         if (action === "home") { screen = "dashboard"; }
         if (action === "history") { screen = "history"; }
         if (action === "wizard") { screen = "wizard"; step = 1; }
-        if (action === "back") { if (step > 1) step--; else screen = "dashboard"; }
+        if (action === "launch") { step = 1; }
+        if (action === "back") { if (step > 1) step--; else step = 0; }
         if (action === "photo") {
           if (draft.photo) {
             if (draft.photoUrl?.startsWith("blob:")) URL.revokeObjectURL(draft.photoUrl);
