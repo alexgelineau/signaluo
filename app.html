@@ -10,10 +10,16 @@
   </head>
   <body>
     <main class="site visible entering" id="application-page">
-      <section class="phone" aria-label="Application Signaluo">
-        <div class="phone-bar"></div>
-        <div id="app" class="app"></div>
-      </section>
+      <div class="app-column">
+        <div class="app-switcher" role="tablist" aria-label="Choisir une version de l’application">
+          <button class="version-tab active" type="button" role="tab" aria-selected="true" data-version="user">Version Utilisateur</button>
+          <button class="version-tab" type="button" role="tab" aria-selected="false" data-version="professional">Version Professionnel</button>
+        </div>
+        <section class="phone" aria-label="Application Signaluo">
+          <div class="phone-bar"></div>
+          <div id="app" class="app"></div>
+        </section>
+      </div>
     </main>
     <div id="toast" class="toast" role="status"></div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>

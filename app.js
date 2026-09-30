@@ -14,8 +14,10 @@
         { id: 2, title: "Lampadaire en panne", description: "Le lampadaire ne s’allume plus depuis 3 jours.", category: "Éclairage", date: today, status: "Traité", location: "47.4712° N, 0.5513° W" }
       ];
       let reports = JSON.parse(localStorage.getItem("signaluo-reports") || "null") || seed;
+      let appVersion = "user";
       let manager = false, screen = "wizard", step = 0, mapInstance = null, mapMarker = null, draft = { photo: false, category: "", location: "", title: "", description: "", anonymous: true, lastName: "", firstName: "", email: "", phone: "" };
       const app = document.querySelector("#app");
+      const versionTabs = document.querySelectorAll("[data-version]");
       const esc = value => String(value).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;" }[c]));
       function save() { localStorage.setItem("signaluo-reports", JSON.stringify(reports)); }
       function toast(message) { const node = document.querySelector("#toast"); node.textContent = message; node.classList.add("show"); setTimeout(() => node.classList.remove("show"), 2600); }
@@ -150,8 +152,31 @@
         if (draft.location) setMapLocation(center[0], center[1], draft.location);
       }
       function cycleStatus(id) { const report = reports.find(r => r.id === id); if (!report) return; report.status = report.status === "Envoyé" ? "En cours" : report.status === "En cours" ? "Traité" : "Envoyé"; save(); render(); toast(`Statut mis à jour : ${report.status}`); }
-      function render() { screen === "dashboard" ? renderDashboard() : screen === "history" ? renderHistory() : renderWizard(); }
+      function renderProfessional() {
+        app.innerHTML = '<div class="screen version-placeholder"><div class="placeholder-mark">⚙</div><span class="eyebrow">ESPACE PROFESSIONNEL</span><h2>Version professionnel</h2><p>Cette version est actuellement en développement.</p></div>';
+      }
+      function updateVersionTabs() {
+        versionTabs.forEach(tab => {
+          const active = tab.dataset.version === appVersion;
+          tab.classList.toggle("active", active);
+          tab.setAttribute("aria-selected", String(active));
+        });
+      }
+      function render() {
+        updateVersionTabs();
+        if (appVersion === "professional") {
+          renderProfessional();
+          return;
+        }
+        screen === "dashboard" ? renderDashboard() : screen === "history" ? renderHistory() : renderWizard();
+      }
       document.addEventListener("click", event => {
+        const version = event.target.closest("[data-version]")?.dataset.version;
+        if (version && version !== appVersion) {
+          appVersion = version;
+          render();
+          return;
+        }
         const action = event.target.closest("[data-action]")?.dataset.action;
         if (!action) return;
         if (action === "start") { screen = "wizard"; step = 1; draft = { photo: false, category: "", location: "", title: "", description: "", anonymous: true, lastName: "", firstName: "", email: "", phone: "" }; }
