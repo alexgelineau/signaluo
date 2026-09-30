@@ -62,8 +62,9 @@
       .phone { grid-column: 2; width: min(402px, 26vw); height: min(874px, 92vh); justify-self: center; overflow: hidden; border: 9px solid #111827; border-radius: 46px; background: var(--bg); box-shadow: 0 28px 70px #0f172a33; }
       .phone-bar { height: 26px; background: #111827; }
       .app { height: calc(100% - 26px); overflow: auto; position: relative; }
-      .screen { min-height: 100%; padding: 24px 18px 30px; animation: appear .2s ease; }
-      @keyframes appear { from { opacity: .4; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+      .screen { min-height: 100%; padding: 24px 18px 30px; animation: screen-transition .42s both cubic-bezier(.2,.8,.2,1); transform-origin: center top; }
+      @keyframes screen-transition { from { opacity: 0; transform: translateY(14px) scale(.985); } to { opacity: 1; transform: none; } }
+      @media (prefers-reduced-motion: reduce) { .screen { animation: none; } }
       .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
       .topbar h2 { margin: 0; font-size: 1.25rem; letter-spacing: -.04em; }
       .icon-btn { width: 36px; height: 36px; border: 0; border-radius: 12px; background: #fff; color: var(--ink); box-shadow: 0 2px 8px #0f172a12; font-size: 1.1rem; }
