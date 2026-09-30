@@ -7,6 +7,26 @@
       body { margin: 0; min-height: 100vh; font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif; color: var(--ink); background: linear-gradient(135deg, #e0f2fe, #f8fafc 48%, #ecfdf5); }
       button, input, textarea { font: inherit; }
       button { cursor: pointer; }
+      .landing { min-height: 100vh; padding: 30px 7vw; background: radial-gradient(circle at 80% 48%, #bfdbfe 0, transparent 28%), linear-gradient(135deg, #eff6ff, #f8fafc 52%, #ecfdf5); }
+      .landing-nav { display: flex; align-items: center; justify-content: space-between; max-width: 1320px; margin: 0 auto; }
+      .landing-brand { display: flex; align-items: center; gap: 11px; color: var(--ink); font-size: 1.15rem; font-weight: 800; letter-spacing: -.04em; text-decoration: none; }
+      .landing-nav-label { color: var(--muted); font-size: .78rem; }
+      .landing-content { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, .8fr); align-items: center; max-width: 1320px; min-height: calc(100vh - 150px); margin: 0 auto; gap: 6vw; }
+      .landing-copy { max-width: 700px; }
+      .eyebrow { display: inline-block; margin-bottom: 24px; color: var(--blue); font-size: .7rem; font-weight: 800; letter-spacing: .18em; }
+      .landing h1 { margin: 0; font-size: clamp(3.5rem, 8vw, 7.5rem); line-height: .9; letter-spacing: -.09em; }
+      .landing h1 em { color: var(--blue); font-style: normal; }
+      .landing-copy p { max-width: 510px; margin: 34px 0; color: var(--muted); font-size: 1.1rem; line-height: 1.7; }
+      .landing-cta { display: inline-flex; align-items: center; gap: 28px; border: 0; border-radius: 14px; padding: 16px 19px 16px 22px; background: var(--ink); color: #fff; font-weight: 750; box-shadow: 0 14px 30px #0f172a2b; }
+      .landing-cta span { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: #fff; color: var(--ink); font-size: 1.1rem; }
+      .landing-footer { display: flex; gap: 28px; max-width: 1320px; margin: 0 auto; color: var(--faint); font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+      .landing-visual { position: relative; display: grid; place-items: center; width: min(38vw, 480px); aspect-ratio: 1; justify-self: center; border-radius: 50%; background: #ffffff8c; box-shadow: inset 0 0 70px #fff, 0 25px 80px #60a5fa26; }
+      .visual-orbit { position: absolute; border: 1px solid #93c5fd80; border-radius: 50%; transform: rotate(-25deg); }
+      .orbit-one { width: 72%; height: 34%; } .orbit-two { width: 88%; height: 45%; transform: rotate(35deg); }
+      .visual-pin { display: grid; place-items: center; width: 110px; height: 110px; border-radius: 34px; background: var(--ink); color: #facc15; font-size: 4rem; box-shadow: 0 20px 35px #0f172a40; transform: rotate(-8deg); }
+      .visual-dot { position: absolute; width: 13px; height: 13px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 8px #3b82f620; } .dot-one { top: 22%; right: 17%; } .dot-two { bottom: 24%; left: 15%; background: var(--green); } .dot-three { top: 61%; right: 5%; background: var(--yellow); }
+      .site { display: none; }
+      .site.visible { display: grid; }
       .site { min-height: 100vh; display: grid; grid-template-columns: 70% 30%; align-items: center; padding: 0 2vw; }
       .intro { display: none; }
       .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.15rem; letter-spacing: -.03em; }
@@ -75,4 +95,4 @@
       .details-section { padding-top: 12px; border-top: 1px solid var(--line); }
       .details-section h4 { margin: 0 0 7px; font-size: .85rem; }
       .details-section p { margin: 5px 0; color: var(--muted); font-size: .78rem; line-height: 1.45; }
-      @media (max-width: 800px) { .site { display: block; padding: 0; } .phone { grid-column: auto; width: 100%; min-height: 100vh; height: auto; max-width: none; border: 0; border-radius: 0; box-shadow: none; } }
+      @media (max-width: 800px) { .landing { padding: 24px; } .landing-nav-label { display: none; } .landing-content { display: block; min-height: calc(100vh - 120px); padding-top: 14vh; } .landing h1 { font-size: 4.2rem; } .landing-copy p { font-size: .98rem; } .landing-visual { display: none; } .landing-footer { margin-top: 20px; gap: 13px; font-size: .62rem; } .site { display: none; padding: 0; } .site.visible { display: block; } .phone { grid-column: auto; width: 100%; min-height: 100vh; height: auto; max-width: none; border: 0; border-radius: 0; box-shadow: none; } }
