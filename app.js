@@ -65,6 +65,9 @@ let step = 0;
 let mapInstance = null;
 let mapMarker = null;
 let adminView = "dashboard";
+let adminTransitioning = false;
+let adminTransitionTimeout = null;
+let adminTransitionFrame = null;
 
 // Le brouillon est conservé en mémoire pendant que l'utilisateur navigue
 // entre les étapes ou change temporairement de version d'application.
@@ -235,7 +238,14 @@ function renderAdminReports(newReportId = null) {
 // Met à jour l'onglet visuel et le contenu de la fenêtre macOS.
 function setAdminView(view) {
 	adminView = view;
-	adminContent.classList.remove("admin-content-transition");
+
+	if (!adminTransitioning) {
+		adminContent.classList.remove("admin-content-transition");
+	}
+
+	if (adminTransitionFrame) {
+		window.cancelAnimationFrame(adminTransitionFrame);
+	}
 
 	// Cette fonction fléchée synchronise l'état actif de chaque bouton administratif.
 	adminNavigation.forEach(navigationItem => {
@@ -251,9 +261,19 @@ function setAdminView(view) {
 		renderAdminDashboard();
 	}
 
-	// Cette fonction fléchée relance la transition après le nouveau rendu du panneau.
-	window.requestAnimationFrame(() => {
+	if (adminTransitioning) {
+		return;
+	}
+
+	// Cette fonction fléchée lance la transition après le nouveau rendu du panneau.
+	adminTransitionFrame = window.requestAnimationFrame(() => {
 		adminContent.classList.add("admin-content-transition");
+		adminTransitioning = true;
+		adminTransitionFrame = null;
+
+		adminTransitionTimeout = window.setTimeout(() => {
+			adminTransitioning = false;
+		}, 1050);
 	});
 }
 
