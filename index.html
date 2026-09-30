@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Signaluo — Signaler un problème</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="styles.css" />
+    <script src="landing.js" defer></script>
   </head>
   <body>
     <div class="loader" id="loader" aria-label="Chargement de Signaluo">
@@ -23,7 +23,7 @@
           <span class="eyebrow">LA NOUVELLE FAÇON D’AGIR</span>
           <h1>Votre ville.<br /><em>Votre voix.</em><br />Votre impact.</h1>
           <p>Un problème dans votre quartier ? Signalez-le simplement à votre mairie et participez concrètement à l’amélioration de votre quotidien.</p>
-          <button class="landing-cta" id="discover-button">Découvrir notre solution <span>→</span></button>
+          <a class="landing-cta" href="app.html">Découvrir notre solution <span>→</span></a>
         </div>
         <div class="landing-visual" aria-hidden="true">
           <div class="visual-orbit orbit-one"></div>
@@ -34,13 +34,5 @@
       </div>
       <div class="landing-footer"><span>Signaler.</span><span>Suivre.</span><span>Améliorer.</span></div>
     </section>
-    <main class="site">
-      <section class="phone" aria-label="Application Signaluo">
-        <div class="phone-bar"></div><div id="app" class="app"></div>
-      </section>
-    </main>
-    <div id="toast" class="toast" role="status"></div>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-    <script src="app.js"></script>
   </body>
 </html>

@@ -29,7 +29,7 @@
       .landing h1 { margin: 0; font-size: clamp(3.5rem, 8vw, 7.5rem); line-height: .9; letter-spacing: -.09em; }
       .landing h1 em { color: var(--blue); font-style: normal; }
       .landing-copy p { max-width: 510px; margin: 34px 0; color: var(--muted); font-size: 1.1rem; line-height: 1.7; }
-      .landing-cta { display: inline-flex; align-items: center; gap: 28px; border: 0; border-radius: 14px; padding: 16px 19px 16px 22px; background: var(--ink); color: #fff; font-weight: 750; box-shadow: 0 14px 30px #0f172a2b; }
+      .landing-cta { display: inline-flex; align-items: center; gap: 28px; border: 0; border-radius: 14px; padding: 16px 19px 16px 22px; background: var(--ink); color: #fff; font-weight: 750; text-decoration: none; box-shadow: 0 14px 30px #0f172a2b; }
       .landing-cta span { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: #fff; color: var(--ink); font-size: 1.1rem; }
       .landing-footer { display: flex; gap: 28px; max-width: 1320px; margin: 0 auto; color: var(--faint); font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
       .landing-visual { position: relative; display: grid; place-items: center; width: min(38vw, 480px); aspect-ratio: 1; justify-self: center; border-radius: 50%; background: #ffffff8c; box-shadow: inset 0 0 70px #fff, 0 25px 80px #60a5fa26; }
