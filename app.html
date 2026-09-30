@@ -1,63 +1,108 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Signaluo — Signaler un problème</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="styles.css" />
-    <script src="app-entry.js"></script>
-  </head>
-  <body>
-    <main class="site visible entering" id="application-page">
-      <section class="management-preview" aria-labelledby="management-title">
-        <h2 class="management-page-title">Interface d’administration</h2>
-        <div class="mac-window-bar">
-          <div class="mac-window-controls" aria-hidden="true"><span></span><span></span><span></span></div>
-          <span class="mac-window-title">Signaluo Manager</span>
-          <span class="mac-window-menu">•••</span>
-        </div>
-        <div class="mac-window-body">
-          <aside class="mac-sidebar">
-            <div class="mac-brand"><span>⌖</span> Signaluo</div>
-            <div class="mac-nav active">▦ <span>Tableau de bord</span></div>
-            <div class="mac-nav">⌖ <span>Signalements</span></div>
-            <div class="mac-nav">⚙ <span>Paramètres</span></div>
-          </aside>
-          <div class="mac-content">
-            <div class="management-header">
-              <span class="management-kicker">ESPACE PROFESSIONNEL</span>
-              <span class="development-badge">EN DÉVELOPPEMENT</span>
-            </div>
-            <div class="management-icon">⌘</div>
-            <h1 id="management-title">Logiciel de gestion des signalements</h1>
-            <p>Un espace dédié aux équipes municipales pour centraliser, suivre et traiter les signalements des citoyens.</p>
-            <div class="management-preview-card">
-              <div class="preview-line preview-line-title"></div>
-              <div class="preview-grid">
-                <span></span><span></span><span></span>
-              </div>
-              <div class="preview-list">
-                <span></span><span></span><span></span>
-              </div>
-            </div>
-            <p class="management-note">Cette interface sera bientôt disponible.</p>
-          </div>
-        </div>
-      </section>
-      <div class="app-column">
-        <div class="app-switcher" role="tablist" aria-label="Choisir une version de l’application">
-          <button class="version-tab active" type="button" role="tab" aria-selected="true" data-version="user">Version Utilisateur</button>
-          <button class="version-tab" type="button" role="tab" aria-selected="false" data-version="professional">Version Professionnel</button>
-        </div>
-        <section class="phone" aria-label="Application Signaluo">
-          <div class="phone-bar"></div>
-          <div id="app" class="app"></div>
-        </section>
-      </div>
-    </main>
-    <div id="toast" class="toast" role="status"></div>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-    <script src="app.js"></script>
-  </body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Signaluo — Signaler un problème</title>
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+		<link rel="stylesheet" href="styles.css" />
+		<script src="app-entry.js"></script>
+	</head>
+
+	<body>
+		<main class="site visible entering" id="application-page">
+			<!-- Aperçu du futur logiciel de gestion municipal. -->
+			<section class="management-preview" aria-labelledby="management-title">
+				<h2 class="management-page-title">Interface d’administration</h2>
+
+				<div class="mac-window-bar">
+					<div class="mac-window-controls" aria-hidden="true">
+						<span></span>
+						<span></span>
+						<span></span>
+					</div>
+					<span class="mac-window-title">Signaluo Manager</span>
+					<span class="mac-window-menu">•••</span>
+				</div>
+
+				<div class="mac-window-body">
+					<aside class="mac-sidebar">
+						<div class="mac-brand">
+							<span>⌖</span>
+							Signaluo
+						</div>
+						<div class="mac-nav active">
+							▦
+							<span>Tableau de bord</span>
+						</div>
+						<div class="mac-nav">
+							⌖
+							<span>Signalements</span>
+						</div>
+						<div class="mac-nav">
+							⚙
+							<span>Paramètres</span>
+						</div>
+					</aside>
+
+					<div class="mac-content">
+						<div class="management-header">
+							<span class="management-kicker">ESPACE PROFESSIONNEL</span>
+							<span class="development-badge">EN DÉVELOPPEMENT</span>
+						</div>
+						<div class="management-icon">⌘</div>
+						<h1 id="management-title">Logiciel de gestion des signalements</h1>
+						<p>Un espace dédié aux équipes municipales pour centraliser, suivre et traiter les signalements des citoyens.</p>
+						<div class="management-preview-card">
+							<div class="preview-line preview-line-title"></div>
+							<div class="preview-grid">
+								<span></span><span></span><span></span>
+							</div>
+							<div class="preview-list">
+								<span></span><span></span><span></span>
+							</div>
+						</div>
+						<p class="management-note">Cette interface sera bientôt disponible.</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Sélecteur entre les deux futures versions de Signaluo. -->
+			<div class="app-column">
+				<div
+					class="app-switcher"
+					role="tablist"
+					aria-label="Choisir une version de l’application"
+				>
+					<button
+						class="version-tab active"
+						type="button"
+						role="tab"
+						aria-selected="true"
+						data-version="user"
+					>
+						Version Utilisateur
+					</button>
+					<button
+						class="version-tab"
+						type="button"
+						role="tab"
+						aria-selected="false"
+						data-version="professional"
+					>
+						Version Professionnel
+					</button>
+				</div>
+
+				<section class="phone" aria-label="Application Signaluo">
+					<div class="phone-bar"></div>
+					<div id="app" class="app"></div>
+				</section>
+			</div>
+		</main>
+
+		<div id="toast" class="toast" role="status"></div>
+		<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+		<script src="app.js"></script>
+	</body>
 </html>

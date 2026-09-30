@@ -1,38 +1,73 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Signaluo — Signaler un problème</title>
-    <link rel="stylesheet" href="styles.css" />
-    <script src="landing.js" defer></script>
-  </head>
-  <body>
-    <div class="loader" id="loader" aria-label="Chargement de Signaluo">
-      <div class="loader-mark">⌖</div>
-      <div class="loader-name">Signaluo</div>
-      <div class="loader-track"><span></span></div>
-    </div>
-    <section class="landing" id="landing">
-      <nav class="landing-nav">
-        <a class="landing-brand" href="#landing"><span class="brand-mark">⌖</span> Signaluo</a>
-        <span class="landing-nav-label">La ville se construit ensemble</span>
-      </nav>
-      <div class="landing-content">
-        <div class="landing-copy">
-          <span class="eyebrow">LA NOUVELLE FAÇON D’AGIR</span>
-          <h1>Votre ville.<br /><em>Votre voix.</em><br />Votre impact.</h1>
-          <p>Un problème dans votre quartier ? Signalez-le simplement à votre mairie et participez concrètement à l’amélioration de votre quotidien.</p>
-          <a class="landing-cta" href="app.html">Découvrir notre solution <span>→</span></a>
-        </div>
-        <div class="landing-visual" aria-hidden="true">
-          <div class="visual-orbit orbit-one"></div>
-          <div class="visual-orbit orbit-two"></div>
-          <div class="visual-pin">⌖</div>
-          <span class="visual-dot dot-one"></span><span class="visual-dot dot-two"></span><span class="visual-dot dot-three"></span>
-        </div>
-      </div>
-      <div class="landing-footer"><span>Signaler.</span><span>Suivre.</span><span>Améliorer.</span></div>
-    </section>
-  </body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Signaluo — Signaler un problème</title>
+		<link rel="stylesheet" href="styles.css" />
+		<script src="landing.js" defer></script>
+	</head>
+
+	<body>
+		<!-- Écran de chargement affiché avant la landing page. -->
+		<div
+			class="loader"
+			id="loader"
+			aria-label="Chargement de Signaluo"
+		>
+			<div class="loader-mark">⌖</div>
+			<div class="loader-name">Signaluo</div>
+			<div class="loader-track">
+				<span></span>
+			</div>
+		</div>
+
+		<!-- Présentation principale de Signaluo. -->
+		<section class="landing" id="landing">
+			<nav class="landing-nav">
+				<a class="landing-brand" href="#landing">
+					<span class="brand-mark">⌖</span>
+					Signaluo
+				</a>
+				<span class="landing-nav-label">
+					La ville se construit ensemble
+				</span>
+			</nav>
+
+			<div class="landing-content">
+				<div class="landing-copy">
+					<span class="eyebrow">LA NOUVELLE FAÇON D’AGIR</span>
+					<h1>
+						Votre ville.<br />
+						<em>Votre voix.</em><br />
+						Votre impact.
+					</h1>
+					<p>
+						Un problème dans votre quartier ? Signalez-le simplement à
+						votre mairie et participez concrètement à l’amélioration de
+						votre quotidien.
+					</p>
+					<a class="landing-cta" href="app.html">
+						Découvrir notre solution
+						<span>→</span>
+					</a>
+				</div>
+
+				<div class="landing-visual" aria-hidden="true">
+					<div class="visual-orbit orbit-one"></div>
+					<div class="visual-orbit orbit-two"></div>
+					<div class="visual-pin">⌖</div>
+					<span class="visual-dot dot-one"></span>
+					<span class="visual-dot dot-two"></span>
+					<span class="visual-dot dot-three"></span>
+				</div>
+			</div>
+
+			<div class="landing-footer">
+				<span>Signaler.</span>
+				<span>Suivre.</span>
+				<span>Améliorer.</span>
+			</div>
+		</section>
+	</body>
 </html>
