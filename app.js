@@ -16,9 +16,15 @@
       let reports = JSON.parse(localStorage.getItem("signaluo-reports") || "null") || seed;
       let manager = false, screen = "wizard", step = 1, mapInstance = null, mapMarker = null, draft = { photo: false, category: "", location: "", title: "", description: "", anonymous: true, lastName: "", firstName: "", email: "", phone: "" };
       const app = document.querySelector("#app");
+      window.setTimeout(() => document.querySelector("#loader").classList.add("loaded"), 1100);
       document.querySelector("#discover-button").addEventListener("click", () => {
-        document.querySelector("#landing").hidden = true;
-        document.querySelector(".site").classList.add("visible");
+        const landing = document.querySelector("#landing");
+        const site = document.querySelector(".site");
+        landing.classList.add("leaving");
+        window.setTimeout(() => {
+          landing.hidden = true;
+          site.classList.add("visible", "entering");
+        }, 550);
       });
       const esc = value => String(value).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;" }[c]));
       function save() { localStorage.setItem("signaluo-reports", JSON.stringify(reports)); }
