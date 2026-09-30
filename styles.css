@@ -65,7 +65,8 @@
       .intro-points span { padding: 10px 14px; border: 1px solid #ffffff; border-radius: 999px; background: #ffffff80; color: var(--muted); font-size: .86rem; }
       .phone { width: min(402px, 26vw); height: min(874px, 92vh); overflow: hidden; border: 9px solid #111827; border-radius: 46px; background: var(--bg); box-shadow: 0 28px 70px #0f172a33; }
       .phone-bar { height: 26px; background: #111827; }
-      .app { height: calc(100% - 26px); overflow: auto; position: relative; }
+      .app { height: calc(100% - 26px); overflow: auto; position: relative; scrollbar-width: none; -ms-overflow-style: none; }
+      .app::-webkit-scrollbar { display: none; }
       .screen { min-height: 100%; padding: 24px 18px 30px; animation: screen-transition .42s both cubic-bezier(.2,.8,.2,1); transform-origin: center top; }
       .version-placeholder { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; min-height: 100%; }
       .placeholder-mark { display: grid; place-items: center; width: 64px; height: 64px; margin-bottom: 22px; border-radius: 20px; background: var(--ink); color: #facc15; font-size: 2rem; }
