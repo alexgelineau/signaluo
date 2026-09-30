@@ -7,7 +7,7 @@
       body { margin: 0; min-height: 100vh; font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif; color: var(--ink); background: linear-gradient(135deg, #e0f2fe, #f8fafc 48%, #ecfdf5); }
       button, input, textarea { font: inherit; }
       button { cursor: pointer; }
-      .site { min-height: 100vh; display: grid; place-items: center; padding: 4vw; }
+      .site { min-height: 100vh; display: grid; grid-template-columns: 70% 30%; align-items: center; padding: 0 2vw; }
       .intro { display: none; }
       .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.15rem; letter-spacing: -.03em; }
       .brand-mark { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 14px; background: var(--ink); color: #facc15; font-size: 1.4rem; box-shadow: 0 8px 20px #0f172a2b; }
@@ -16,10 +16,10 @@
       .intro p { max-width: 490px; color: var(--muted); font-size: 1.15rem; line-height: 1.7; }
       .intro-points { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
       .intro-points span { padding: 10px 14px; border: 1px solid #ffffff; border-radius: 999px; background: #ffffff80; color: var(--muted); font-size: .86rem; }
-      .phone { width: 100%; max-width: 560px; overflow: hidden; border: 9px solid #111827; border-radius: 34px; background: var(--bg); box-shadow: 0 28px 70px #0f172a33; }
+      .phone { grid-column: 2; width: min(402px, 26vw); height: min(874px, 92vh); justify-self: center; overflow: hidden; border: 9px solid #111827; border-radius: 46px; background: var(--bg); box-shadow: 0 28px 70px #0f172a33; }
       .phone-bar { height: 26px; background: #111827; }
-      .app { min-height: 680px; max-height: 88vh; overflow: auto; position: relative; }
-      .screen { min-height: 680px; padding: 24px 18px 30px; animation: appear .2s ease; }
+      .app { height: calc(100% - 26px); overflow: auto; position: relative; }
+      .screen { min-height: 100%; padding: 24px 18px 30px; animation: appear .2s ease; }
       @keyframes appear { from { opacity: .4; transform: translateY(5px); } to { opacity: 1; transform: none; } }
       .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
       .topbar h2 { margin: 0; font-size: 1.25rem; letter-spacing: -.04em; }
@@ -75,4 +75,4 @@
       .details-section { padding-top: 12px; border-top: 1px solid var(--line); }
       .details-section h4 { margin: 0 0 7px; font-size: .85rem; }
       .details-section p { margin: 5px 0; color: var(--muted); font-size: .78rem; line-height: 1.45; }
-      @media (max-width: 800px) { .site { display: block; padding: 0; } .phone { min-height: 100vh; max-width: none; border: 0; border-radius: 0; box-shadow: none; } }
+      @media (max-width: 800px) { .site { display: block; padding: 0; } .phone { grid-column: auto; width: 100%; min-height: 100vh; height: auto; max-width: none; border: 0; border-radius: 0; box-shadow: none; } }
