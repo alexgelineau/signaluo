@@ -91,8 +91,10 @@ const adminNavigation = document.querySelectorAll("[data-admin-action]");
 // ---------------------------------------------------------------------------
 
 // Échappe les valeurs avant leur insertion dans du HTML généré.
+// Cette fonction fléchée protège les textes affichés dans les modèles HTML.
 const esc = value => String(value).replace(
 	/[&<>"']/g,
+	// Cette fonction fléchée remplace chaque caractère spécial par son équivalent sécurisé.
 	character => ({
 		"&": "&amp;",
 		"<": "&lt;",
@@ -116,6 +118,7 @@ function toast(message) {
 	node.textContent = message;
 	node.classList.add("show");
 
+	// Cette fonction fléchée masque le message après sa durée d'affichage.
 	window.setTimeout(() => {
 		node.classList.remove("show");
 	}, 2600);
@@ -168,13 +171,20 @@ function renderAdminDashboard() {
 
 
 // Affiche les mêmes données que celles enregistrées par l'application mobile.
-function renderAdminReports() {
+function renderAdminReports(newReportId = null) {
 	const reportList = reports.length
 		? reports
 			.slice()
 			.reverse()
-			.map(report => `
-				<article class="admin-report">
+			// Cette fonction fléchée transforme chaque signalement en carte administrative.
+			.map((report, index) => `
+				<article class="admin-report ${
+					report.id === newReportId
+						? "admin-report-new"
+						: newReportId && index > 0
+							? "admin-report-shifted"
+							: ""
+				}">
 					<div class="admin-report-icon">
 						${report.photoUrl
 							? `<img src="${esc(report.photoUrl)}" alt="">`
@@ -207,6 +217,18 @@ function renderAdminReports() {
 		</div>
 		<div class="admin-report-list">${reportList}</div>
 	`;
+
+	if (newReportId) {
+		const list = adminContent.querySelector(".admin-report-list");
+
+		// Cette fonction fléchée lance le défilement après le rendu de la nouvelle carte.
+		window.requestAnimationFrame(() => {
+			list?.scrollTo({
+				top: 0,
+				behavior: "smooth"
+			});
+		});
+	}
 }
 
 
@@ -214,6 +236,7 @@ function renderAdminReports() {
 function setAdminView(view) {
 	adminView = view;
 
+	// Cette fonction fléchée synchronise l'état actif de chaque bouton administratif.
 	adminNavigation.forEach(navigationItem => {
 		navigationItem.classList.toggle(
 			"active",
@@ -233,7 +256,9 @@ function setAdminView(view) {
 // Historique et détails d'un signalement
 // ---------------------------------------------------------------------------
 
+// Construit la carte visuelle d'un signalement dans l'application citoyenne.
 function reportCard(report, showStatus = true) {
+	// Cette fonction fléchée retrouve la catégorie correspondant au signalement.
 	const category = CATEGORIES.find(item => item[0] === report.category) || CATEGORIES[4];
 	const status = showStatus
 		? `<span class="badge ${statusClass(report.status)}">${esc(report.status)}</span>`
@@ -255,6 +280,7 @@ function reportCard(report, showStatus = true) {
 }
 
 
+// Affiche les informations complètes d'un signalement dans une fenêtre modale.
 function showReportDetails(id) {
 	const report = reports.find(item => item.id === id);
 
@@ -262,6 +288,7 @@ function showReportDetails(id) {
 		return;
 	}
 
+	// Cette fonction fléchée retrouve la catégorie correspondant au signalement détaillé.
 	const category = CATEGORIES.find(item => item[0] === report.category) || CATEGORIES[4];
 	const photo = report.photoUrl
 		? `<img class="details-photo" src="${esc(report.photoUrl)}" alt="Photo du signalement">`
@@ -317,8 +344,11 @@ function showReportDetails(id) {
 // Rendu des écrans principaux
 // ---------------------------------------------------------------------------
 
+// Affiche l'écran d'accueil de l'application citoyenne.
 function renderDashboard() {
+	// Cette fonction fléchée compte les signalements actuellement en cours.
 	const inProgress = reports.filter(report => report.status === "En cours").length;
+	// Cette fonction fléchée compte les signalements déjà traités.
 	const resolved = reports.filter(report => report.status === "Traité").length;
 	const managerBanner = manager
 		? `
@@ -365,7 +395,9 @@ function renderDashboard() {
 		</div>
 	`;
 
+	// Cette fonction fléchée ouvre le détail du signalement sélectionné.
 	app.querySelectorAll(".report").forEach(card => {
+		// Cette fonction fléchée réagit au clic sur une carte.
 		card.addEventListener("click", () => {
 			showReportDetails(Number(card.dataset.id));
 		});
@@ -373,6 +405,7 @@ function renderDashboard() {
 }
 
 
+// Affiche l'historique complet des signalements de l'utilisateur.
 function renderHistory() {
 	const reportCount = `${reports.length} demande${reports.length > 1 ? "s" : ""}`;
 	const history = reports.length
@@ -394,7 +427,9 @@ function renderHistory() {
 		</div>
 	`;
 
+	// Cette fonction fléchée ouvre le détail du signalement sélectionné.
 	app.querySelectorAll(".report").forEach(card => {
+		// Cette fonction fléchée réagit au clic sur une carte historique.
 		card.addEventListener("click", () => {
 			showReportDetails(Number(card.dataset.id));
 		});
@@ -402,6 +437,7 @@ function renderHistory() {
 }
 
 
+// Affiche l'étape courante du parcours de création d'un signalement.
 function renderWizard() {
 	if (step === 0) {
 		app.innerHTML = `
@@ -433,6 +469,7 @@ function renderWizard() {
 		? '<button class="icon-btn" data-action="back">←</button>'
 		: "<span></span>";
 	const progressSteps = [1, 2, 3, 4]
+		// Cette fonction fléchée génère un indicateur pour chaque étape du parcours.
 		.map(number => `
 			<span class="step ${number <= step ? "active" : ""}"></span>
 		`)
@@ -496,6 +533,7 @@ function wizardContent() {
 
 	if (step === 2) {
 		const categories = CATEGORIES
+			// Cette fonction fléchée génère un bouton pour chaque catégorie disponible.
 			.map(category => `
 				<button
 					class="category ${category[2]} ${draft.category === category[0] ? "selected" : ""}"
@@ -575,8 +613,11 @@ function wizardContent() {
 // Événements propres au formulaire
 // ---------------------------------------------------------------------------
 
+// Branche les événements des champs et boutons de l'étape courante.
 function bindWizard() {
+	// Cette fonction fléchée prépare chaque bouton de catégorie.
 	app.querySelectorAll("[data-category]").forEach(button => {
+		// Cette fonction fléchée enregistre la catégorie choisie et actualise l'écran.
 		button.onclick = () => {
 			draft.category = button.dataset.category;
 			renderWizard();
@@ -586,6 +627,7 @@ function bindWizard() {
 	const galleryInput = app.querySelector("#gallery-input");
 
 	if (galleryInput) {
+		// Cette fonction fléchée traite une image choisie depuis la galerie.
 		galleryInput.addEventListener("change", () => {
 			const file = galleryInput.files?.[0];
 
@@ -600,6 +642,7 @@ function bindWizard() {
 
 			const reader = new FileReader();
 
+			// Cette fonction fléchée affiche l'image une fois sa lecture terminée.
 			reader.onload = () => {
 				draft.photo = true;
 				draft.photoUrl = reader.result;
@@ -611,7 +654,9 @@ function bindWizard() {
 		});
 	}
 
+	// Cette fonction fléchée prépare chaque option de confidentialité.
 	app.querySelectorAll('input[name="privacy"]').forEach(input => {
+		// Cette fonction fléchée mémorise le choix de confidentialité.
 		input.onchange = () => {
 			draft.anonymous = input.value === "anonymous";
 			renderWizard();
@@ -621,21 +666,25 @@ function bindWizard() {
 	const title = app.querySelector("#title");
 	const description = app.querySelector("#description");
 
+	// Cette fonction fléchée prépare chaque champ texte du signalement.
 	[title, description].forEach(input => {
 		if (!input) {
 			return;
 		}
 
+		// Cette fonction fléchée mémorise chaque modification du champ.
 		input.addEventListener("input", () => {
 			draft[input.id] = input.value.trim();
 			updateWizardNext();
 		});
 	});
 
+	// Cette fonction fléchée prépare chaque champ de contact.
 	["lastName", "firstName", "email", "phone"].forEach(field => {
 		const input = app.querySelector(`#${field}`);
 
 		if (input) {
+			// Cette fonction fléchée mémorise chaque modification de contact.
 			input.addEventListener("input", () => {
 				draft[field] = input.value.trim();
 			});
@@ -657,6 +706,7 @@ function updateWizardNext() {
 // Carte interactive
 // ---------------------------------------------------------------------------
 
+// Enregistre une position et met à jour le repère visible sur la carte.
 function setMapLocation(
 	latitude,
 	longitude,
@@ -695,6 +745,7 @@ function setMapLocation(
 }
 
 
+// Initialise la carte interactive de l'étape de localisation.
 function initMap() {
 	if (!window.L) {
 		toast("La carte n’a pas pu être chargée");
@@ -729,6 +780,7 @@ function initMap() {
 		.addAttribution("&copy; OpenStreetMap contributors")
 		.addTo(mapInstance);
 
+	// Cette fonction fléchée place un repère après un clic sur la carte.
 	mapInstance.on("click", event => {
 		setMapLocation(event.latlng.lat, event.latlng.lng);
 		toast("Repère placé sur la carte");
@@ -744,6 +796,7 @@ function initMap() {
 // Version professionnelle et rendu global
 // ---------------------------------------------------------------------------
 
+// Fait progresser le statut d'un signalement en mode gestionnaire.
 function cycleStatus(id) {
 	const report = reports.find(item => item.id === id);
 
@@ -763,6 +816,7 @@ function cycleStatus(id) {
 }
 
 
+// Affiche l'écran temporaire de la version professionnelle.
 function renderProfessional() {
 	app.innerHTML = `
 		<div class="screen version-placeholder">
@@ -775,7 +829,9 @@ function renderProfessional() {
 }
 
 
+// Met à jour l'apparence et l'accessibilité des onglets de version.
 function updateVersionTabs() {
+	// Cette fonction fléchée synchronise chaque onglet avec la version active.
 	versionTabs.forEach(tab => {
 		const active = tab.dataset.version === appVersion;
 
@@ -785,6 +841,7 @@ function updateVersionTabs() {
 }
 
 
+// Choisit et affiche l'écran correspondant à l'état actuel de l'application.
 function render() {
 	updateVersionTabs();
 
@@ -807,6 +864,7 @@ function render() {
 // Gestion centralisée des clics
 // ---------------------------------------------------------------------------
 
+// Cette fonction fléchée centralise les clics de navigation de la page.
 document.addEventListener("click", event => {
 	const version = event.target.closest("[data-version]")?.dataset.version;
 
@@ -961,7 +1019,7 @@ document.addEventListener("click", event => {
 
 		save();
 		if (adminView === "reports") {
-			renderAdminReports();
+			renderAdminReports(reports[reports.length - 1].id);
 		}
 		screen = "wizard";
 		step = 1;

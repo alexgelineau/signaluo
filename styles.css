@@ -482,6 +482,36 @@ button {
 	background: #fff;
 }
 
+.admin-report-new {
+	animation: admin-report-slide-in .85s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.admin-report-shifted {
+	animation: admin-report-shift-down .7s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+@keyframes admin-report-slide-in {
+	from {
+		opacity: 0;
+		transform: translateX(54px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes admin-report-shift-down {
+	from {
+		transform: translateY(-18px);
+	}
+
+	to {
+		transform: translateY(0);
+	}
+}
+
 .admin-report-icon {
 	display: grid;
 	place-items: center;
@@ -852,6 +882,11 @@ button {
 }
 @media (prefers-reduced-motion: reduce) {
 	.screen {
+		animation: none;
+	}
+
+	.admin-report-new,
+	.admin-report-shifted {
 		animation: none;
 	}
 }

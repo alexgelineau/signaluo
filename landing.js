@@ -13,6 +13,7 @@ function resetLandingState() {
 
 
 // Laisse le temps à l'animation du loader de se terminer.
+// Cette fonction fléchée marque le loader comme terminé.
 window.setTimeout(() => {
 	loader?.classList.add("loaded");
 }, 1100);
@@ -23,6 +24,7 @@ window.addEventListener("pageshow", resetLandingState);
 
 
 // Anime la sortie avant d'ouvrir l'application.
+// Cette fonction fléchée intercepte le clic sur le lien principal.
 solutionLink?.addEventListener("click", (event) => {
 	if (prefersReducedMotion) return;
 
@@ -30,6 +32,7 @@ solutionLink?.addEventListener("click", (event) => {
 	landing?.classList.add("leaving");
 	solutionLink.setAttribute("aria-disabled", "true");
 
+	// Cette fonction fléchée ouvre l'application après l'animation de transition.
 	window.setTimeout(() => {
 		window.location.href = solutionLink.href;
 	}, 520);
