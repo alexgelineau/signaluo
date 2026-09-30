@@ -639,14 +639,26 @@ function wizardContent() {
 // Événements propres au formulaire
 // ---------------------------------------------------------------------------
 
+// Met à jour visuellement la catégorie choisie sans reconstruire l'écran.
+function updateCategorySelection() {
+	app.querySelectorAll("[data-category]").forEach(categoryButton => {
+		const isSelected = categoryButton.dataset.category === draft.category;
+
+		categoryButton.classList.toggle("selected", isSelected);
+	});
+
+	updateWizardNext();
+}
+
+
 // Branche les événements des champs et boutons de l'étape courante.
 function bindWizard() {
 	// Cette fonction fléchée prépare chaque bouton de catégorie.
 	app.querySelectorAll("[data-category]").forEach(button => {
-		// Cette fonction fléchée enregistre la catégorie choisie et actualise l'écran.
+		// Cette fonction fléchée enregistre la catégorie choisie sans recharger l'écran.
 		button.onclick = () => {
 			draft.category = button.dataset.category;
-			renderWizard();
+			updateCategorySelection();
 		};
 	});
 
