@@ -82,6 +82,8 @@ let draft = {
 
 const app = document.querySelector("#app");
 const versionTabs = document.querySelectorAll("[data-version]");
+const adminContent = document.querySelector("#admin-content");
+const adminNavigation = document.querySelectorAll("[data-admin-action]");
 
 // ---------------------------------------------------------------------------
 // Petites fonctions utilitaires
@@ -130,6 +132,97 @@ function statusClass(status) {
 	}
 
 	return "sent";
+}
+
+
+// Affiche le tableau de bord de l'interface d'administration.
+function renderAdminDashboard() {
+	adminContent.innerHTML = `
+		<div class="management-header">
+			<span class="management-kicker">ESPACE PROFESSIONNEL</span>
+			<span class="development-badge">EN DÉVELOPPEMENT</span>
+		</div>
+		<div class="management-icon">⌘</div>
+		<h1 id="management-title">Logiciel de gestion des signalements</h1>
+		<p>
+			Un espace dédié aux équipes municipales pour centraliser, suivre et
+			traiter les signalements des citoyens.
+		</p>
+		<div class="management-preview-card">
+			<div class="preview-line preview-line-title"></div>
+			<div class="preview-grid">
+				<span></span>
+				<span></span>
+				<span></span>
+			</div>
+			<div class="preview-list">
+				<span></span>
+				<span></span>
+				<span></span>
+			</div>
+		</div>
+		<p class="management-note">Sélectionnez « Signalements » pour consulter la liste.</p>
+	`;
+}
+
+
+// Affiche les mêmes données que celles enregistrées par l'application mobile.
+function renderAdminReports() {
+	const reportList = reports.length
+		? reports
+			.slice()
+			.reverse()
+			.map(report => `
+				<article class="admin-report">
+					<div class="admin-report-icon">
+						${report.photoUrl
+							? `<img src="${esc(report.photoUrl)}" alt="">`
+							: "⌖"}
+					</div>
+					<div class="admin-report-content">
+						<strong>${esc(report.title)}</strong>
+						<span>${esc(report.category)} · ${esc(report.date)}</span>
+						<small>${esc(report.location)}</small>
+					</div>
+					<span class="admin-report-status ${statusClass(report.status)}">
+						${esc(report.status)}
+					</span>
+				</article>
+			`)
+			.join("")
+		: '<p class="management-note">Aucun signalement enregistré.</p>';
+
+	adminContent.innerHTML = `
+		<div class="management-header">
+			<span class="management-kicker">ESPACE PROFESSIONNEL</span>
+			<span class="development-badge">EN DÉVELOPPEMENT</span>
+		</div>
+		<div class="admin-reports-heading">
+			<div>
+				<span class="eyebrow">CENTRE DE SUIVI</span>
+				<h2>Signalements reçus</h2>
+			</div>
+			<strong>${reports.length}</strong>
+		</div>
+		<div class="admin-report-list">${reportList}</div>
+	`;
+}
+
+
+// Met à jour l'onglet visuel et le contenu de la fenêtre macOS.
+function setAdminView(view) {
+	adminNavigation.forEach(navigationItem => {
+		navigationItem.classList.toggle(
+			"active",
+			navigationItem.dataset.adminAction === view
+		);
+	});
+
+	if (view === "reports") {
+		renderAdminReports();
+	} else {
+		renderAdminDashboard();
+	}
 }
 
 
@@ -720,6 +813,13 @@ document.addEventListener("click", event => {
 		return;
 	}
 
+	const adminAction = event.target.closest("[data-admin-action]")?.dataset.adminAction;
+
+	if (adminAction) {
+		setAdminView(adminAction);
+		return;
+	}
+
 	const action = event.target.closest("[data-action]")?.dataset.action;
 
 	if (!action) {
@@ -857,6 +957,7 @@ document.addEventListener("click", event => {
 		});
 
 		save();
+		renderAdminReports();
 		screen = "wizard";
 		step = 1;
 		draft = {
@@ -875,6 +976,7 @@ document.addEventListener("click", event => {
 	}
 
 	render();
+	setAdminView("dashboard");
 });
 
 // Premier rendu : l'application démarre sur la page 0 de lancement.
