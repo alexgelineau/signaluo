@@ -235,6 +235,7 @@ function renderAdminReports(newReportId = null) {
 // Met à jour l'onglet visuel et le contenu de la fenêtre macOS.
 function setAdminView(view) {
 	adminView = view;
+	adminContent.classList.remove("admin-content-transition");
 
 	// Cette fonction fléchée synchronise l'état actif de chaque bouton administratif.
 	adminNavigation.forEach(navigationItem => {
@@ -249,6 +250,11 @@ function setAdminView(view) {
 	} else {
 		renderAdminDashboard();
 	}
+
+	// Cette fonction fléchée relance la transition après le nouveau rendu du panneau.
+	window.requestAnimationFrame(() => {
+		adminContent.classList.add("admin-content-transition");
+	});
 }
 
 

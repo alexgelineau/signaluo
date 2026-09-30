@@ -483,11 +483,11 @@ button {
 }
 
 .admin-report-new {
-	animation: admin-report-slide-in .85s cubic-bezier(.22, 1, .36, 1) both;
+	animation: admin-report-slide-in 1.2s cubic-bezier(.22, 1, .36, 1) both;
 }
 
 .admin-report-shifted {
-	animation: admin-report-shift-down .7s cubic-bezier(.22, 1, .36, 1) both;
+	animation: admin-report-shift-down 1s cubic-bezier(.22, 1, .36, 1) both;
 }
 
 @keyframes admin-report-slide-in {
@@ -509,6 +509,22 @@ button {
 
 	to {
 		transform: translateY(0);
+	}
+}
+
+.admin-content-transition {
+	animation: admin-content-slide-in 1.05s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+@keyframes admin-content-slide-in {
+	from {
+		opacity: 0;
+		transform: translateX(24px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0);
 	}
 }
 
@@ -886,7 +902,8 @@ button {
 	}
 
 	.admin-report-new,
-	.admin-report-shifted {
+	.admin-report-shifted,
+	.admin-content-transition {
 		animation: none;
 	}
 }
