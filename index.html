@@ -3,9 +3,162 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hello World</title>
+    <title>Signaluo — Signaler un problème</title>
+    <style>
+      :root {
+        --bg: #f8fafc; --ink: #0f172a; --muted: #64748b; --faint: #94a3b8;
+        --line: #e2e8f0; --blue: #3b82f6; --yellow: #f59e0b;
+        --green: #10b981; --red: #ef4444; --purple: #6b7280;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif; color: var(--ink); background: linear-gradient(135deg, #e0f2fe, #f8fafc 48%, #ecfdf5); }
+      button, input, textarea { font: inherit; }
+      button { cursor: pointer; }
+      .site { min-height: 100vh; display: grid; grid-template-columns: 1fr minmax(330px, 30vw); gap: 5vw; align-items: center; padding: 5vw 7vw; }
+      .intro { max-width: 680px; }
+      .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.15rem; letter-spacing: -.03em; }
+      .brand-mark { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 14px; background: var(--ink); color: #facc15; font-size: 1.4rem; box-shadow: 0 8px 20px #0f172a2b; }
+      .intro h1 { max-width: 620px; margin: 8vh 0 20px; font-size: clamp(3rem, 7vw, 6.8rem); line-height: .94; letter-spacing: -.08em; }
+      .intro h1 span { color: var(--blue); }
+      .intro p { max-width: 490px; color: var(--muted); font-size: 1.15rem; line-height: 1.7; }
+      .intro-points { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
+      .intro-points span { padding: 10px 14px; border: 1px solid #ffffff; border-radius: 999px; background: #ffffff80; color: var(--muted); font-size: .86rem; }
+      .phone { width: 100%; max-width: 440px; justify-self: end; overflow: hidden; border: 9px solid #111827; border-radius: 34px; background: var(--bg); box-shadow: 0 28px 70px #0f172a33; }
+      .phone-bar { height: 26px; background: #111827; }
+      .app { min-height: 680px; max-height: 88vh; overflow: auto; position: relative; }
+      .screen { min-height: 680px; padding: 24px 18px 30px; animation: appear .2s ease; }
+      @keyframes appear { from { opacity: .4; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+      .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+      .topbar h2 { margin: 0; font-size: 1.25rem; letter-spacing: -.04em; }
+      .icon-btn { width: 36px; height: 36px; border: 0; border-radius: 12px; background: #fff; color: var(--ink); box-shadow: 0 2px 8px #0f172a12; font-size: 1.1rem; }
+      .hero { padding: 22px; border-radius: 22px; color: #fff; background: linear-gradient(135deg, #0f172a, #334155); }
+      .hero small { color: #e2e8f0; }
+      .hero h3 { margin: 7px 0 8px; font-size: 1.55rem; letter-spacing: -.05em; }
+      .hero p { margin: 0; color: #cbd5e1; font-size: .85rem; line-height: 1.5; }
+      .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0; }
+      .stat { padding: 14px; border-radius: 16px; background: #fff; border: 1px solid var(--line); }
+      .stat b { display: block; font-size: 1.4rem; } .stat small { color: var(--muted); font-size: .68rem; font-weight: 700; letter-spacing: .04em; }
+      .primary, .secondary { width: 100%; border: 0; border-radius: 14px; padding: 13px 16px; font-weight: 750; transition: transform .15s, opacity .15s; }
+      .primary { background: var(--ink); color: #fff; } .secondary { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+      button:hover { transform: translateY(-1px); } button:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+      .section-title { display: flex; justify-content: space-between; align-items: center; margin: 22px 2px 10px; }
+      .section-title b { font-size: .92rem; } .section-title button { border: 0; background: none; color: var(--blue); font-size: .75rem; font-weight: 700; }
+      .report { display: grid; grid-template-columns: 52px 1fr; gap: 12px; align-items: center; padding: 11px; margin: 8px 0; border: 1px solid var(--line); border-radius: 16px; background: #fff; }
+      .report-icon { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 13px; font-size: 1.4rem; }
+      .report h4 { margin: 0 0 3px; font-size: .87rem; } .report p { margin: 0; color: var(--muted); font-size: .7rem; }
+      .badge { display: inline-block; margin-top: 6px; padding: 3px 7px; border-radius: 999px; font-size: .62rem; font-weight: 750; }
+      .sent { color: #0284c7; background: #e0f2fe; } .progress { color: #d97706; background: #ffe8a1; } .resolved { color: #059669; background: #a7f3d0; }
+      .steps { display: flex; gap: 5px; margin: -5px 0 22px; } .step { height: 5px; flex: 1; border-radius: 5px; background: var(--line); } .step.active { background: var(--blue); }
+      .screen h3 { margin: 0 0 8px; font-size: 1.32rem; letter-spacing: -.04em; } .screen > p { margin: 0 0 20px; color: var(--muted); font-size: .82rem; line-height: 1.5; }
+      .photo-box { display: grid; place-items: center; min-height: 230px; margin: 20px 0 14px; border: 2px dashed #cbd5e1; border-radius: 22px; background: #f1f5f9; color: var(--faint); text-align: center; }
+      .photo-box.has-photo { border-style: solid; border-color: var(--blue); background: #e0f2fe; color: var(--blue); }
+      .photo-box strong { display: block; margin-top: 10px; color: var(--muted); font-size: .86rem; }
+      .categories { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0 22px; }
+      .category { min-height: 100px; border: 3px solid transparent; border-radius: 17px; color: #fff; font-weight: 800; text-align: left; padding: 14px; }
+      .category.selected { border-color: #fff; outline: 3px solid var(--ink); } .category span { display: block; margin-bottom: 18px; font-size: 1.4rem; } .category small { font-size: .76rem; }
+      .road { background: var(--blue); } .light { background: var(--yellow); } .clean { background: var(--red); } .nature { background: var(--green); } .other { background: var(--purple); }
+      label { display: block; margin: 12px 0 6px; color: var(--muted); font-size: .73rem; font-weight: 700; }
+      input, textarea { width: 100%; border: 1px solid var(--line); border-radius: 12px; padding: 12px; outline: 0; background: #fff; color: var(--ink); } textarea { min-height: 80px; resize: vertical; } input:focus, textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px #3b82f622; }
+      .map { position: relative; height: 160px; overflow: hidden; margin: 16px 0 10px; border: 1px solid #bfdbfe; border-radius: 18px; background: #dbeafe; background-image: linear-gradient(25deg, transparent 47%, #fff 48%, #fff 51%, transparent 52%), linear-gradient(110deg, transparent 46%, #93c5fd 47%, #93c5fd 51%, transparent 52%); background-size: 75px 75px; }
+      .pin { position: absolute; left: 52%; top: 45%; font-size: 2rem; transform: translate(-50%, -100%); filter: drop-shadow(0 3px 2px #0004); }
+      .option { display: flex; align-items: center; gap: 10px; padding: 13px; margin: 8px 0; border: 1px solid var(--line); border-radius: 13px; background: #fff; font-size: .8rem; }
+      .option.selected { border: 2px solid var(--ink); } .option input { width: auto; }
+      .actions { display: grid; gap: 9px; margin-top: 20px; } .back { border: 0; background: none; color: var(--muted); font-size: .78rem; }
+      .empty { padding: 50px 12px; color: var(--muted); text-align: center; } .empty div { font-size: 3rem; opacity: .35; }
+      .toast { position: fixed; left: 50%; bottom: 24px; z-index: 3; padding: 12px 16px; border-radius: 12px; background: var(--ink); color: #fff; box-shadow: 0 8px 25px #0003; transform: translate(-50%, 100px); transition: transform .25s; font-size: .82rem; } .toast.show { transform: translate(-50%, 0); }
+      @media (max-width: 800px) { .site { display: block; padding: 28px 16px; } .intro { margin-bottom: 34px; } .intro h1 { margin: 42px 0 16px; font-size: 3.7rem; } .intro p { font-size: 1rem; } .phone { margin: auto; max-width: 430px; } }
+    </style>
   </head>
   <body>
-    <h1>Hello World</h1>
+    <main class="site">
+      <section class="intro">
+        <div class="brand"><span class="brand-mark">⌖</span> Signaluo</div>
+        <h1>Votre ville,<br /><span>en mieux.</span></h1>
+        <p>Signalez les petits problèmes du quotidien à votre mairie. Une photo, quelques détails, et votre quartier avance.</p>
+        <div class="intro-points"><span>⚡ En quelques secondes</span><span>📍 Localisé précisément</span><span>🤝 Suivi transparent</span></div>
+      </section>
+      <section class="phone" aria-label="Application Signaluo">
+        <div class="phone-bar"></div><div id="app" class="app"></div>
+      </section>
+    </main>
+    <div id="toast" class="toast" role="status"></div>
+    <script>
+      const CATEGORIES = [
+        ["Voirie", "🛣️", "road"], ["Éclairage", "💡", "light"],
+        ["Propreté", "🗑️", "clean"], ["Espaces Verts", "🌿", "nature"], ["Autre", "•••", "other"]
+      ];
+      const today = new Intl.DateTimeFormat("fr-FR").format(new Date());
+      const seed = [
+        { id: 1, title: "Nid de poule", description: "Gros trou sur la chaussée au niveau du 12 rue de la Paix.", category: "Voirie", date: today, status: "En cours", location: "47.4712° N, 0.5513° W" },
+        { id: 2, title: "Lampadaire en panne", description: "Le lampadaire ne s’allume plus depuis 3 jours.", category: "Éclairage", date: today, status: "Traité", location: "47.4712° N, 0.5513° W" }
+      ];
+      let reports = JSON.parse(localStorage.getItem("signaluo-reports") || "null") || seed;
+      let manager = false, screen = "dashboard", step = 1, draft = { photo: false, category: "", location: "", title: "", description: "", anonymous: true };
+      const app = document.querySelector("#app");
+      const esc = value => String(value).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;" }[c]));
+      function save() { localStorage.setItem("signaluo-reports", JSON.stringify(reports)); }
+      function toast(message) { const node = document.querySelector("#toast"); node.textContent = message; node.classList.add("show"); setTimeout(() => node.classList.remove("show"), 2600); }
+      function statusClass(status) { return status === "Traité" ? "resolved" : status === "En cours" ? "progress" : "sent"; }
+      function reportCard(report) {
+        const category = CATEGORIES.find(c => c[0] === report.category) || CATEGORIES[4];
+        return `<article class="report" data-id="${report.id}"><div class="report-icon ${category[2]}">${category[1]}</div><div><h4>${esc(report.title)}</h4><p>📍 ${esc(report.location)} · ${esc(report.date)}</p><span class="badge ${statusClass(report.status)}">${esc(report.status)}</span></div></article>`;
+      }
+      function renderDashboard() {
+        const inProgress = reports.filter(r => r.status === "En cours").length, resolved = reports.filter(r => r.status === "Traité").length;
+        app.innerHTML = `<div class="screen"><div class="topbar"><button class="icon-btn" data-action="manager" title="Mode gestionnaire">🔒</button><h2>Mes Signalements</h2><button class="icon-btn" data-action="history">⌕</button></div>
+          ${manager ? '<div class="option selected">🔓 <b>Mode gestionnaire actif</b><small> Cliquez sur une demande pour changer son statut.</small></div>' : ""}
+          <div class="hero"><small>Bonjour 👋</small><h3>Améliorons la ville ensemble.</h3><p>Un signalement simple, un impact concret sur votre quotidien.</p></div>
+          <div class="stats"><div class="stat"><b>${inProgress}</b><small>EN COURS</small></div><div class="stat"><b>${resolved}</b><small>TRAITÉS</small></div></div>
+          <button class="primary" data-action="start">＋ Signaler un problème</button>
+          <div class="section-title"><b>Derniers signalements</b><button data-action="history">Voir tout l’historique</button></div>
+          ${reports.length ? reports.slice(-3).reverse().map(reportCard).join("") : '<div class="empty"><div>⌖</div>Aucun signalement</div>'}</div>`;
+        app.querySelectorAll(".report").forEach(card => card.addEventListener("click", () => manager && cycleStatus(Number(card.dataset.id))));
+      }
+      function renderHistory() {
+        app.innerHTML = `<div class="screen"><div class="topbar"><button class="icon-btn" data-action="home">←</button><h2>Mes Signalements</h2><span></span></div><div class="section-title"><b>${reports.length} demande${reports.length > 1 ? "s" : ""}</b><button data-action="start">＋ Nouveau</button></div>${reports.length ? reports.slice().reverse().map(reportCard).join("") : '<div class="empty"><div>⌖</div>Vous n’avez pas encore réalisé de signalement.</div>'}</div>`;
+        app.querySelectorAll(".report").forEach(card => card.addEventListener("click", () => manager && cycleStatus(Number(card.dataset.id))));
+      }
+      function renderWizard() {
+        const titles = ["Photo du problème", "Type de problème", "Détails & localisation", "Envoi du signalement"];
+        app.innerHTML = `<div class="screen"><div class="topbar"><button class="icon-btn" data-action="back">←</button><h2>${step}. ${titles[step - 1]}</h2><span></span></div><div class="steps">${[1,2,3,4].map(n => `<span class="step ${n <= step ? "active" : ""}"></span>`).join("")}</div>${wizardContent()}</div>`;
+        bindWizard();
+      }
+      function wizardContent() {
+        if (step === 1) return `<h3>Photo du problème</h3><p>Une image aide les services de la ville à comprendre rapidement la situation.</p><div class="photo-box ${draft.photo ? "has-photo" : ""}">${draft.photo ? '<div style="font-size:4rem">🖼️<strong>Photo ajoutée</strong></div>' : '<div style="font-size:3rem">📷<strong>Aucune photo sélectionnée</strong></div>'}</div><div class="actions"><button class="primary" data-action="photo">${draft.photo ? "Changer la photo" : "Prendre une photo"}</button><button class="secondary" data-action="next" ${draft.photo ? "" : "disabled"}>Suivant</button><button class="back" data-action="history">Voir les demandes</button></div>`;
+        if (step === 2) return `<h3>Type de problème</h3><p>Quel type de problème souhaitez-vous signaler ?</p><div class="categories">${CATEGORIES.map(c => `<button class="category ${c[2]} ${draft.category === c[0] ? "selected" : ""}" data-category="${c[0]}"><span>${c[1]}</span><small>${c[0]}</small></button>`).join("")}</div><div class="actions"><button class="primary" data-action="next" ${draft.category ? "" : "disabled"}>Suivant</button></div>`;
+        if (step === 3) return `<h3>Détails & localisation</h3><p>Décrivez le problème et indiquez où il se trouve.</p><label for="title">Titre court</label><input id="title" value="${esc(draft.title)}" placeholder="Ex. Nid de poule"><label for="description">Description détaillée</label><textarea id="description" placeholder="Ajoutez quelques détails...">${esc(draft.description)}</textarea><div class="map"><span class="pin">📍</span></div><button class="secondary" data-action="location">◎ Détecter ma position</button><p style="margin:9px 0 0;color:var(--green);font-size:.72rem">✓ ${draft.location || "Position non définie"}</p><div class="actions"><button class="primary" data-action="next" ${draft.title && draft.description && draft.location ? "" : "disabled"}>Suivant</button></div>`;
+        return `<h3>Envoi du signalement</h3><p>Choisissez comment transmettre votre demande à la mairie.</p><label class="option ${draft.anonymous ? "selected" : ""}"><input type="radio" name="privacy" value="anonymous" ${draft.anonymous ? "checked" : ""}> Envoyer anonymement</label><label class="option ${!draft.anonymous ? "selected" : ""}"><input type="radio" name="privacy" value="contact" ${!draft.anonymous ? "checked" : ""}> Envoyer avec mes coordonnées</label>${draft.anonymous ? "" : '<label for="name">Nom et prénom</label><input id="name" placeholder="Votre nom"><label for="email">Adresse e-mail</label><input id="email" type="email" placeholder="vous@exemple.fr">'}<div class="actions"><button class="primary" data-action="submit">Envoyer le signalement</button></div>`;
+      }
+      function bindWizard() {
+        app.querySelectorAll("[data-category]").forEach(button => button.onclick = () => { draft.category = button.dataset.category; renderWizard(); });
+        app.querySelectorAll('input[name="privacy"]').forEach(input => input.onchange = () => { draft.anonymous = input.value === "anonymous"; renderWizard(); });
+        const title = app.querySelector("#title"), description = app.querySelector("#description");
+        [title, description].forEach(input => input && input.addEventListener("input", () => {
+          draft[input.id] = input.value.trim();
+          updateWizardNext();
+        }));
+      }
+      function updateWizardNext() {
+        const next = app.querySelector('[data-action="next"]');
+        if (next && step === 3) next.disabled = !(draft.title && draft.description && draft.location);
+      }
+      function cycleStatus(id) { const report = reports.find(r => r.id === id); if (!report) return; report.status = report.status === "Envoyé" ? "En cours" : report.status === "En cours" ? "Traité" : "Envoyé"; save(); render(); toast(`Statut mis à jour : ${report.status}`); }
+      function render() { screen === "dashboard" ? renderDashboard() : screen === "history" ? renderHistory() : renderWizard(); }
+      document.addEventListener("click", event => {
+        const action = event.target.closest("[data-action]")?.dataset.action;
+        if (!action) return;
+        if (action === "start") { screen = "wizard"; step = 1; draft = { photo: false, category: "", location: "", title: "", description: "", anonymous: true }; }
+        if (action === "home") { screen = "dashboard"; }
+        if (action === "history") { screen = "history"; }
+        if (action === "back") { if (step > 1) step--; else screen = "dashboard"; }
+        if (action === "photo") { draft.photo = true; toast("Photo capturée"); }
+        if (action === "location") { draft.location = "47.4712° N, 0.5513° W (Angers Centre)"; toast("Position mise à jour"); }
+        if (action === "next") { if (step < 4) step++; }
+        if (action === "manager") { const password = prompt("Mot de passe gestionnaire"); if (password === "admin") { manager = !manager; toast(manager ? "Mode gestionnaire activé" : "Mode gestionnaire désactivé"); } else if (password !== null) toast("Mot de passe incorrect"); }
+        if (action === "submit") { reports.push({ id: Date.now(), title: draft.title, description: draft.description, category: draft.category, location: draft.location, date: new Intl.DateTimeFormat("fr-FR").format(new Date()), status: "Envoyé" }); save(); screen = "dashboard"; toast("Merci ! Signalement envoyé à la mairie."); }
+        render();
+      });
+      render();
+    </script>
   </body>
 </html>

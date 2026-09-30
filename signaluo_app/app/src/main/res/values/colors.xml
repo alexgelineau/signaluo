@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="bg_app">#F8FAFC</color>
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="text_muted">#94A3B8</color>
+    <color name="text_welcome_sub">#E2E8F0</color>
+    <color name="stat_in_progress_bg">#FFE8A1</color>
+    <color name="stat_in_progress_text">#D97706</color>
+    <color name="stat_in_progress_sub">#92400E</color>
+    <color name="stat_resolved_bg">#A7F3D0</color>
+    <color name="stat_resolved_text">#059669</color>
+    <color name="stat_resolved_sub">#065F46</color>
+    <color name="stat_sent_bg">#E0F2FE</color>
+    <color name="stat_sent_text">#0284C7</color>
+    <color name="border_light">#E2E8F0</color>
+    <color name="bg_card_thumbnail">#F1F5F9</color>
+    <color name="card_description_text">#666666</color>
+    <color name="logo_pin">#FFEB3B</color>
+
+    <color name="status_resolved">#388E3C</color>
+    <color name="status_in_progress">#F57C00</color>
+    <color name="status_sent">#1976D2</color>
+
+    <!-- Category Colors -->
+    <color name="cat_road">#3B82F6</color>
+    <color name="cat_light">#F59E0B</color>
+    <color name="cat_clean">#EF4444</color>
+    <color name="cat_nature">#10B981</color>
+    <color name="cat_other">#6B7280</color>
+</resources>

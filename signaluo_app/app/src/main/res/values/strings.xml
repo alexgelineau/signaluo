@@ -1,0 +1,109 @@
+<resources>
+    <string name="app_name">Signaluo</string>
+    <string name="welcome_greeting">Bonjour,</string>
+    <string name="app_tagline">Aidez votre mairie à améliorer votre quotidien en quelques secondes.</string>
+    <string name="btn_start">C\'est parti</string>
+    <string name="stat_in_progress">EN COURS</string>
+    <string name="stat_resolved">TRAITÉS</string>
+    <string name="btn_view_history">Voir tout l\'historique</string>
+    <string name="title_my_reports">Mes Signalements</string>
+    <string name="filter_all">Tout</string>
+    <string name="filter_in_progress">En cours</string>
+    <string name="filter_resolved">Traités</string>
+    <string name="title_new_report">Signaluo</string>
+    <string name="step_photo">1. Photo du problème</string>
+    <string name="step_category">2. Type de problème</string>
+    <string name="hint_select_category">Sélectionner une catégorie</string>
+    <string name="btn_view_reports">Voir les demandes</string>
+    <string name="no_photo_selected">Aucune photo sélectionnée</string>
+    <string name="btn_take_photo">Prendre une photo</string>
+    <string name="step_location">3. Localisation</string>
+    <string name="location_not_defined">Position non définie</string>
+    <string name="btn_detect_location">Détecter ma position</string>
+    <string name="step_details">4. Détails</string>
+    <string name="hint_short_title">Titre court</string>
+    <string name="hint_detailed_description">Description détaillée</string>
+    <string name="btn_submit_report">Envoyer le signalement</string>
+    <string name="error_fill_fields">Veuillez remplir les informations de base</string>
+    <string name="loading_camera">Accès caméra...</string>
+    <string name="toast_photo_captured">Photo capturée</string>
+    <string name="btn_change_photo">Changer la photo</string>
+    <string name="loading_gps">Recherche GPS...</string>
+    <string name="location_updated">Position mise à jour</string>
+    <string name="toast_location_retrieved">Position récupérée</string>
+    <string name="loading_sending">Envoi du signalement...</string>
+    <string name="toast_success">Merci ! Signalement envoyé à la mairie.</string>
+    <string name="status_sent">Envoyé</string>
+    <string name="status_in_progress">En cours</string>
+    <string name="status_resolved">Traité</string>
+    <string name="category_road">Voirie</string>
+    <string name="category_lighting">Éclairage</string>
+    <string name="category_cleanliness">Propreté</string>
+    <string name="category_green_spaces">Espaces Verts</string>
+    <string name="category_other">Autre</string>
+    <string name="placeholder_location_full">47.4712° N, 0.5513° W (Angers Centre)</string>
+    <string name="default_location">47.4712° N, 0.5513° W</string>
+    <string name="report_card_title">Signaler un problème</string>
+    <string name="empty_history_title">Aucun signalement</string>
+    <string name="empty_history_subtitle">Vous n\'avez pas encore réalisé de signalement dans votre ville.</string>
+    <string name="subtitle_select_category">Quel type de problème souhaitez-vous signaler ?</string>
+    <string name="btn_next">Suivant</string>
+    <string name="zero">0</string>
+
+    <string-array name="categories">
+        <item>Voirie</item>
+        <item>Éclairage</item>
+        <item>Propreté</item>
+        <item>Espaces Verts</item>
+        <item>Autre</item>
+    </string-array>
+
+    <!-- Dummy Data -->
+    <string name="dummy_title_pothole">Nid de poule</string>
+    <string name="dummy_desc_pothole">Gros trou sur la chaussée au niveau du 12 rue de la Paix.</string>
+    <string name="dummy_title_lamp">Lampadaire en panne</string>
+    <string name="dummy_desc_lamp">Le lampadaire ne s\'allume plus depuis 3 jours.</string>
+
+    <!-- Admin / Gestion des demandes -->
+    <string name="admin_password_title">Gestion des demandes</string>
+    <string name="admin_password_message">Veuillez saisir le mot de passe pour accéder à la gestion des demandes :</string>
+    <string name="admin_password_hint">Mot de passe</string>
+    <string name="admin_password_error">Mot de passe incorrect</string>
+    <string name="admin_mode_activated">Mode gestionnaire activé</string>
+    <string name="admin_mode_deactivated">Mode gestionnaire désactivé</string>
+    <string name="admin_status_updated">Statut mis à jour : %1$s</string>
+    <string name="admin_mode_banner">Mode Gestionnaire actif - Cliquez sur une demande pour modifier son statut</string>
+    <string name="dialog_change_status_title">Changer le statut du signalement</string>
+    <string name="prompt_enable_manager">Activez le mode gestionnaire (cadenas) pour modifier le statut.</string>
+    <string name="btn_validate">Valider</string>
+    <string name="btn_cancel">Annuler</string>
+
+    <!-- Step Titles -->
+    <string name="splash_creators">Créateurs : Clément Venot &amp; Alex Gelineau</string>
+    <string name="step_1_title">1. Photo du problème</string>
+    <string name="step_2_title">2. Type de problème</string>
+    <string name="step_3_title">3. Détails &amp; Localisation</string>
+    <string name="step_4_title">4. Envoi du signalement</string>
+
+    <!-- Page 1 Strings -->
+    <string name="action_take_photo">Prendre une photo</string>
+    <string name="action_choose_gallery">Choisir dans la galerie</string>
+    <string name="dialog_photo_source_title">Ajouter une photo</string>
+
+    <!-- Page 3 Strings -->
+    <string name="map_click_instruction">Cliquez sur la carte pour placer le repère</string>
+    <string name="location_option_gps">Utiliser la localisation du téléphone</string>
+    <string name="location_option_map">Placer un repère sur la carte</string>
+    <string name="location_gps_selected">Position GPS : 47.4712° N, 0.5513° W</string>
+    <string name="location_map_selected">Repère placé : 47.4720° N, 0.5525° W</string>
+    <string name="toast_map_pin_placed">Repère placé sur la carte</string>
+
+    <!-- Page 4 Strings -->
+    <string name="send_option_contact">Envoyer avec mes coordonnées</string>
+    <string name="send_option_anonymous">Envoyer anonymement</string>
+    <string name="hint_lastname">Nom</string>
+    <string name="hint_firstname">Prénom</string>
+    <string name="hint_email">Adresse e-mail</string>
+    <string name="hint_phone">Numéro de téléphone</string>
+    <string name="error_contact_required">Veuillez remplir votre nom et e-mail</string>
+</resources>

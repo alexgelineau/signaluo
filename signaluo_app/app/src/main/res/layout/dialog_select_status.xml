@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <!-- Card Envoyé -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardStatusSent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardBackgroundColor="@color/stat_sent_bg"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/stat_sent_text"
+        app:strokeWidth="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@android:drawable/ic_menu_send"
+                app:tint="@color/stat_sent_text" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:text="@string/status_sent"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="@color/stat_sent_text"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/ivCheckSent"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_done"
+                android:visibility="gone"
+                app:tint="@color/stat_sent_text" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Card En cours -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardStatusInProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardBackgroundColor="@color/stat_in_progress_bg"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/stat_in_progress_text"
+        app:strokeWidth="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_pending"
+                app:tint="@color/stat_in_progress_text" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:text="@string/status_in_progress"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="@color/stat_in_progress_text"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/ivCheckInProgress"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_done"
+                android:visibility="gone"
+                app:tint="@color/stat_in_progress_text" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Card Traité -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardStatusResolved"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardBackgroundColor="@color/stat_resolved_bg"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/stat_resolved_text"
+        app:strokeWidth="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_done"
+                app:tint="@color/stat_resolved_text" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:text="@string/status_resolved"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="@color/stat_resolved_text"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/ivCheckResolved"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_done"
+                android:visibility="gone"
+                app:tint="@color/stat_resolved_text" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

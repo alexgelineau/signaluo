@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="fr.univ.angers.ageline.signaluo.SplashFragment"
+        android:label="Splash"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splashFragment_to_reportPhotoFragment"
+            app:destination="@id/reportPhotoFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="fr.univ.angers.ageline.signaluo.DashboardFragment"
+        android:label="Dashboard"
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_dashboardFragment_to_reportCategoryFragment"
+            app:destination="@id/reportCategoryFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reportPhotoFragment"
+        android:name="fr.univ.angers.ageline.signaluo.ReportPhotoFragment"
+        android:label="Photo"
+        tools:layout="@layout/fragment_report_photo">
+        <action
+            android:id="@+id/action_reportPhotoFragment_to_reportCategoryFragment"
+            app:destination="@id/reportCategoryFragment" />
+        <action
+            android:id="@+id/action_reportPhotoFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reportCategoryFragment"
+        android:name="fr.univ.angers.ageline.signaluo.ReportCategoryFragment"
+        android:label="Catégorie"
+        tools:layout="@layout/fragment_report_category">
+        <action
+            android:id="@+id/action_reportCategoryFragment_to_reportLocationFragment"
+            app:destination="@id/reportLocationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reportLocationFragment"
+        android:name="fr.univ.angers.ageline.signaluo.ReportLocationFragment"
+        android:label="Localisation"
+        tools:layout="@layout/fragment_report_location">
+        <action
+            android:id="@+id/action_reportLocationFragment_to_reportDetailsFragment"
+            app:destination="@id/reportDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reportDetailsFragment"
+        android:name="fr.univ.angers.ageline.signaluo.ReportDetailsFragment"
+        android:label="Détails"
+        tools:layout="@layout/fragment_report_details">
+        <action
+            android:id="@+id/action_reportDetailsFragment_to_reportPhotoFragment"
+            app:destination="@id/reportPhotoFragment"
+            app:popUpTo="@id/reportPhotoFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_reportDetailsFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="fr.univ.angers.ageline.signaluo.HomeFragment"
+        android:label="Historique"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_reportPhotoFragment"
+            app:destination="@id/reportPhotoFragment" />
+    </fragment>
+</navigation>
