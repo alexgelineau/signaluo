@@ -64,6 +64,7 @@ let screen = "wizard";
 let step = 0;
 let mapInstance = null;
 let mapMarker = null;
+let adminView = "dashboard";
 
 // Le brouillon est conservé en mémoire pendant que l'utilisateur navigue
 // entre les étapes ou change temporairement de version d'application.
@@ -211,6 +212,8 @@ function renderAdminReports() {
 
 // Met à jour l'onglet visuel et le contenu de la fenêtre macOS.
 function setAdminView(view) {
+	adminView = view;
+
 	adminNavigation.forEach(navigationItem => {
 		navigationItem.classList.toggle(
 			"active",
@@ -957,7 +960,9 @@ document.addEventListener("click", event => {
 		});
 
 		save();
-		renderAdminReports();
+		if (adminView === "reports") {
+			renderAdminReports();
+		}
 		screen = "wizard";
 		step = 1;
 		draft = {
@@ -976,8 +981,8 @@ document.addEventListener("click", event => {
 	}
 
 	render();
-	setAdminView("dashboard");
 });
 
 // Premier rendu : l'application démarre sur la page 0 de lancement.
 render();
+setAdminView("dashboard");
