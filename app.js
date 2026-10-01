@@ -752,7 +752,7 @@ function updateWizardNext() {
 function setMapLocation(
 	latitude,
 	longitude,
-	message = `Carte: ${latitude.toFixed(4)}° N, ${Math.abs(longitude).toFixed(4)}° W`
+	message = formatCoordinates(latitude, longitude)
 ) {
 	draft.location = message;
 
@@ -784,6 +784,67 @@ function setMapLocation(
 	}
 
 	updateWizardNext();
+}
+
+
+// Formate les coordonnées avec les points cardinaux correspondant à leur signe.
+function formatCoordinates(latitude, longitude) {
+	const latitudeDirection = latitude >= 0 ? "N" : "S";
+	const longitudeDirection = longitude >= 0 ? "E" : "W";
+
+	return `${Math.abs(latitude).toFixed(4)}° ${latitudeDirection}, `
+		+ `${Math.abs(longitude).toFixed(4)}° ${longitudeDirection}`;
+}
+
+
+// Demande au navigateur la position réelle de l'appareil utilisé.
+function requestDeviceLocation() {
+	if (!navigator.geolocation) {
+		toast("La géolocalisation n’est pas disponible sur cet appareil");
+		return;
+	}
+
+	const status = app.querySelector("#location-status");
+
+	if (status) {
+		status.textContent = "⌛ Recherche de votre position...";
+	}
+
+	navigator.geolocation.getCurrentPosition(
+		// Cette fonction fléchée applique la position réelle reçue à la carte.
+		position => {
+			const { latitude, longitude, accuracy } = position.coords;
+			const coordinates = formatCoordinates(latitude, longitude);
+			const accuracyText = Math.round(accuracy);
+
+			setMapLocation(
+				latitude,
+				longitude,
+				`${coordinates} (précision ±${accuracyText} m)`
+			);
+			toast("Position réelle mise à jour");
+		},
+		// Cette fonction fléchée explique pourquoi la position n'a pas pu être obtenue.
+		error => {
+			const messages = {
+				1: "Autorisation de localisation refusée",
+				2: "Position indisponible",
+				3: "La recherche de position a expiré"
+			};
+			const message = messages[error.code] || "Impossible de récupérer votre position";
+
+			if (status) {
+				status.textContent = `⚠ ${message}`;
+			}
+
+			toast(message);
+		},
+		{
+			enableHighAccuracy: true,
+			timeout: 15000,
+			maximumAge: 0
+		}
+	);
 }
 
 
@@ -1007,12 +1068,7 @@ document.addEventListener("click", event => {
 	}
 
 	if (action === "location") {
-		setMapLocation(
-			47.4712,
-			-0.5513,
-			"47.4712° N, 0.5513° W (Angers Centre)"
-		);
-		toast("Position mise à jour");
+		requestDeviceLocation();
 	}
 
 	if (action === "next" && step < 4) {
