@@ -755,6 +755,8 @@ function setMapLocation(
 	message = formatCoordinates(latitude, longitude)
 ) {
 	draft.location = message;
+	draft.latitude = latitude;
+	draft.longitude = longitude;
 
 	const markerIcon = L.divIcon({
 		className: "map-pin",
@@ -794,57 +796,6 @@ function formatCoordinates(latitude, longitude) {
 
 	return `${Math.abs(latitude).toFixed(4)}° ${latitudeDirection}, `
 		+ `${Math.abs(longitude).toFixed(4)}° ${longitudeDirection}`;
-}
-
-
-// Demande au navigateur la position réelle de l'appareil utilisé.
-function requestDeviceLocation() {
-	if (!navigator.geolocation) {
-		toast("La géolocalisation n’est pas disponible sur cet appareil");
-		return;
-	}
-
-	const status = app.querySelector("#location-status");
-
-	if (status) {
-		status.textContent = "⌛ Recherche de votre position...";
-	}
-
-	navigator.geolocation.getCurrentPosition(
-		// Cette fonction fléchée applique la position réelle reçue à la carte.
-		position => {
-			const { latitude, longitude, accuracy } = position.coords;
-			const coordinates = formatCoordinates(latitude, longitude);
-			const accuracyText = Math.round(accuracy);
-
-			setMapLocation(
-				latitude,
-				longitude,
-				`${coordinates} (précision ±${accuracyText} m)`
-			);
-			toast("Position réelle mise à jour");
-		},
-		// Cette fonction fléchée explique pourquoi la position n'a pas pu être obtenue.
-		error => {
-			const messages = {
-				1: "Autorisation de localisation refusée",
-				2: "Position indisponible",
-				3: "La recherche de position a expiré"
-			};
-			const message = messages[error.code] || "Impossible de récupérer votre position";
-
-			if (status) {
-				status.textContent = `⚠ ${message}`;
-			}
-
-			toast(message);
-		},
-		{
-			enableHighAccuracy: true,
-			timeout: 15000,
-			maximumAge: 0
-		}
-	);
 }
 
 
@@ -889,8 +840,8 @@ function initMap() {
 		toast("Repère placé sur la carte");
 	});
 
-	if (draft.location) {
-		setMapLocation(center[0], center[1], draft.location);
+	if (draft.location && Number.isFinite(draft.latitude) && Number.isFinite(draft.longitude)) {
+		setMapLocation(draft.latitude, draft.longitude, draft.location);
 	}
 }
 
@@ -1068,7 +1019,12 @@ document.addEventListener("click", event => {
 	}
 
 	if (action === "location") {
-		requestDeviceLocation();
+		setMapLocation(
+			47.481016398119436,
+			-0.600092579188889,
+			"47.4810° N, 0.6001° W"
+		);
+		toast("Position du Campus de Belle-Beille mise à jour");
 	}
 
 	if (action === "next" && step < 4) {
