@@ -1104,11 +1104,11 @@ button:disabled {
 	font-size: .62rem;
 	font-weight: 750;
 }
-.sent {
+.received {
 	color: #0284c7;
 	background: #e0f2fe;
 }
-.progress {
+.sent {
 	color: #d97706;
 	background: #ffe8a1;
 }

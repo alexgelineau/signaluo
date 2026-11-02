@@ -37,7 +37,7 @@ const seed = [
 		description: "Gros trou sur la chaussée au niveau du 12 rue de la Paix.",
 		category: "Voirie",
 		date: today,
-		status: "En cours",
+		status: "Envoyé",
 		location: "47.4712° N, 0.5513° W"
 	},
 	{
@@ -56,8 +56,21 @@ const seed = [
 // ---------------------------------------------------------------------------
 
 const savedReports = localStorage.getItem("signaluo-reports");
+const statusMigrationKey = "signaluo-statuses-v2";
 
 let reports = savedReports ? JSON.parse(savedReports) : seed;
+if (savedReports && !localStorage.getItem(statusMigrationKey)) {
+	reports = reports.map(report => ({
+		...report,
+		status: report.status === "En cours"
+			? "Envoyé"
+			: report.status === "Envoyé"
+				? "Reçu"
+				: report.status
+	}));
+	save();
+	localStorage.setItem(statusMigrationKey, "true");
+}
 let appVersion = "user";
 let manager = false;
 let screen = "wizard";
@@ -134,11 +147,18 @@ function statusClass(status) {
 		return "resolved";
 	}
 
-	if (status === "En cours") {
-		return "progress";
+	if (status === "Envoyé") {
+		return "sent";
 	}
 
-	return "sent";
+	return "received";
+}
+
+// Vérifie qu'un numéro respecte la numérotation française à 10 chiffres.
+function isValidFrenchPhone(phone) {
+	const normalizedPhone = phone.replace(/[\s().-]/g, "").replace(/^0033/, "+33");
+
+	return /^(?:0[1-9]\d{8}|\+33[1-9]\d{8})$/.test(normalizedPhone);
 }
 
 
@@ -372,8 +392,8 @@ function showReportDetails(id) {
 
 // Affiche l'écran d'accueil de l'application citoyenne.
 function renderDashboard() {
-	// Cette fonction fléchée compte les signalements actuellement en cours.
-	const inProgress = reports.filter(report => report.status === "En cours").length;
+	// Cette fonction fléchée compte les signalements reçus.
+	const received = reports.filter(report => report.status === "Reçu").length;
 	// Cette fonction fléchée compte les signalements déjà traités.
 	const resolved = reports.filter(report => report.status === "Traité").length;
 	const managerBanner = manager
@@ -404,8 +424,8 @@ function renderDashboard() {
 			</div>
 			<div class="stats">
 				<div class="stat">
-					<b>${inProgress}</b>
-					<small>EN COURS</small>
+					<b>${received}</b>
+					<small>REÇUS</small>
 				</div>
 				<div class="stat">
 					<b>${resolved}</b>
@@ -425,7 +445,11 @@ function renderDashboard() {
 	app.querySelectorAll(".report").forEach(card => {
 		// Cette fonction fléchée réagit au clic sur une carte.
 		card.addEventListener("click", () => {
-			showReportDetails(Number(card.dataset.id));
+			if (manager) {
+				cycleStatus(Number(card.dataset.id));
+			} else {
+				showReportDetails(Number(card.dataset.id));
+			}
 		});
 	});
 }
@@ -435,7 +459,7 @@ function renderDashboard() {
 function renderHistory() {
 	const reportCount = `${reports.length} demande${reports.length > 1 ? "s" : ""}`;
 	const history = reports.length
-		? reports.slice().reverse().map(report => reportCard(report, false)).join("")
+		? reports.slice().reverse().map(report => reportCard(report, manager)).join("")
 		: '<div class="empty"><div>⌖</div>Vous n’avez pas encore réalisé de signalement.</div>';
 
 	app.innerHTML = `
@@ -457,7 +481,11 @@ function renderHistory() {
 	app.querySelectorAll(".report").forEach(card => {
 		// Cette fonction fléchée réagit au clic sur une carte historique.
 		card.addEventListener("click", () => {
-			showReportDetails(Number(card.dataset.id));
+			if (manager) {
+				cycleStatus(Number(card.dataset.id));
+			} else {
+				showReportDetails(Number(card.dataset.id));
+			}
 		});
 	});
 }
@@ -858,11 +886,11 @@ function cycleStatus(id) {
 		return;
 	}
 
-	report.status = report.status === "Envoyé"
-		? "En cours"
-		: report.status === "En cours"
-			? "Traité"
-			: "Envoyé";
+	if (report.status === "Reçu") {
+		report.status = "Envoyé";
+	} else if (report.status === "Envoyé") {
+		report.status = "Traité";
+	}
 
 	save();
 	render();
@@ -1055,6 +1083,22 @@ document.addEventListener("click", event => {
 			return;
 		}
 
+		if (!draft.anonymous) {
+			const emailInput = app.querySelector("#email");
+
+			if (!emailInput?.checkValidity()) {
+				toast("Veuillez saisir une adresse e-mail valide");
+				emailInput?.focus();
+				return;
+			}
+
+			if (!isValidFrenchPhone(draft.phone)) {
+				toast("Veuillez saisir un numéro de téléphone français valide");
+				app.querySelector("#phone")?.focus();
+				return;
+			}
+		}
+
 		reports.push({
 			id: Date.now(),
 			title: draft.title,
@@ -1062,7 +1106,7 @@ document.addEventListener("click", event => {
 			category: draft.category,
 			location: draft.location,
 			date: new Intl.DateTimeFormat("fr-FR").format(new Date()),
-			status: "Envoyé",
+			status: "Reçu",
 			photoUrl: draft.photoUrl || "",
 			userName: draft.anonymous
 				? ""
