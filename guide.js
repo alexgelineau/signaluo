@@ -161,7 +161,10 @@ const GUIDE_SECTIONS = [
 							"statut : orange à traiter, violet envoyé, vert traité. La carte est la " +
 							"même que dans l'application citoyenne (bâtiments 3D, boutons +/− et 3D/2D)."],
 					["Fiche", "Un clic sur un repère affiche statut, titre, description et " +
-							"adresse. « Ouvrir la liste » mène à la page Signalements."]
+							"adresse. « Ouvrir la liste » mène à la page Signalements."],
+					["Mise à jour en direct", "Quand un signalement est envoyé ou change de statut, " +
+							"la carte se met à jour tout de suite (repères, compteur, fiche " +
+							"ouverte) sans bouger la position, le zoom ni l'inclinaison."]
 				]
 			},
 			{

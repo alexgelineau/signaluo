@@ -308,6 +308,11 @@ function save() {
 		renderProfessional();
 	}
 
+	// Met à jour la carte du logiciel en gardant la position de l'utilisateur.
+	if (appReady && adminView === "map") {
+		syncAdminMapPins();
+	}
+
 	// Rafraîchit le tableau de bord du logiciel de gestion.
 	if (appReady && adminView === "dashboard") {
 		renderAdminDashboard();
@@ -2015,6 +2020,7 @@ function renderAdminMap() {
 		return;
 	}
 
+	adminMapSelectedId = null;
 	adminMapInstance = createAppMap({
 		container: "admin-map",
 		center: [-0.5513, 47.4712],
@@ -2022,7 +2028,49 @@ function renderAdminMap() {
 	});
 
 	const card = adminContent.querySelector(".admin-map-card");
-	const bounds = new maplibregl.LngLatBounds();
+
+	// Premier affichage : placement des repères puis cadrage sur tous.
+	adminMapMarkers = [];
+	syncAdminMapPins();
+
+	if (located.length === 1) {
+		adminMapInstance.setCenter([located[0].longitude, located[0].latitude]);
+		adminMapInstance.setZoom(15.5);
+	} else if (located.length > 1) {
+		const bounds = new maplibregl.LngLatBounds();
+
+		located.forEach(report => bounds.extend([report.longitude, report.latitude]));
+		adminMapInstance.fitBounds(bounds, { padding: 70, maxZoom: 16, duration: 0 });
+	}
+
+	// Un clic sur la carte ferme la fiche.
+	adminMapInstance.on("click", () => {
+		card.hidden = true;
+		adminMapSelectedId = null;
+	});
+}
+
+// Repères actuellement posés sur la carte du logiciel, et fiche ouverte.
+let adminMapMarkers = [];
+let adminMapSelectedId = null;
+
+// Remplace les repères par ceux des signalements actuels, sans toucher à la
+// position, au zoom ni à l'inclinaison de la carte (mise à jour en direct).
+function syncAdminMapPins() {
+	if (!adminMapInstance) {
+		return;
+	}
+
+	const card = adminContent.querySelector(".admin-map-card");
+
+	// Seuls les signalements avec coordonnées peuvent être placés.
+	const located = reports.filter(report => (
+		Number.isFinite(report.latitude) && Number.isFinite(report.longitude)
+	));
+
+	// Retire les anciens repères.
+	adminMapMarkers.forEach(marker => marker.remove());
+	adminMapMarkers = [];
 
 	// Un repère coloré par signalement ; un clic ouvre la fiche.
 	located.forEach(report => {
@@ -2035,27 +2083,33 @@ function renderAdminMap() {
 		pin.innerHTML = ico("map-pin");
 		pin.addEventListener("click", event => {
 			event.stopPropagation();
+			adminMapSelectedId = report.id;
 			showAdminMapCard(card, report);
 		});
 
-		new maplibregl.Marker({ element: pin, anchor: "bottom" })
-			.setLngLat([report.longitude, report.latitude])
-			.addTo(adminMapInstance);
-		bounds.extend([report.longitude, report.latitude]);
+		adminMapMarkers.push(
+			new maplibregl.Marker({ element: pin, anchor: "bottom" })
+				.setLngLat([report.longitude, report.latitude])
+				.addTo(adminMapInstance)
+		);
 	});
 
-	// Cadre tous les signalements (ou un seul avec un zoom raisonnable).
-	if (located.length === 1) {
-		adminMapInstance.setCenter([located[0].longitude, located[0].latitude]);
-		adminMapInstance.setZoom(15.5);
-	} else if (located.length > 1) {
-		adminMapInstance.fitBounds(bounds, { padding: 70, maxZoom: 16, duration: 0 });
+	// Compteur « sur la carte ».
+	const counter = adminContent.querySelector(".map-count b");
+
+	if (counter) {
+		counter.textContent = located.length;
 	}
 
-	// Un clic sur la carte ferme la fiche.
-	adminMapInstance.on("click", () => {
+	// La fiche ouverte reste à jour, ou se ferme si le signalement a disparu.
+	const selected = located.find(report => report.id === adminMapSelectedId);
+
+	if (selected) {
+		showAdminMapCard(card, selected);
+	} else {
 		card.hidden = true;
-	});
+		adminMapSelectedId = null;
+	}
 }
 
 // Remplit et affiche la fiche d'un signalement sur la carte.
