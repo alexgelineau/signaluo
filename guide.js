@@ -432,6 +432,50 @@ function guideFlow() {
 }
 
 // Assemble le document complet, ses styles d’impression et son contenu dynamique.
+// Génère les captures annotées : image, pastilles numérotées et légende.
+function guideShotsHtml() {
+	// Le manifeste est produit par tools/capture-guide.js.
+	if (typeof GUIDE_SHOTS === "undefined" || !GUIDE_SHOTS.length) {
+		return "";
+	}
+
+	// Titres des trois groupes, dans l'ordre du manifeste.
+	const groups = [
+		["citoyen", "4. Captures annotées : application citoyenne"],
+		["logiciel", "4. Captures annotées : logiciel de gestion"],
+		["pro", "4. Captures annotées : application professionnelle"]
+	];
+
+	// Une figure : capture avec repères, puis légende numérotée.
+	const figure = shot => {
+		const url = new URL(shot.file, document.baseURI).href;
+		const pins = shot.marks.map((mark, index) =>
+			`<i class="pin" style="left:${mark.x}%;top:${mark.y}%">${index + 1}</i>`
+		).join("");
+		const legend = shot.marks.map((mark, index) =>
+			`<li><b>${index + 1}</b><span>${guideEscape(mark.text)}</span></li>`
+		).join("");
+
+		return `
+			<figure class="shot ${shot.kind}">
+				<figcaption>${guideEscape(shot.title)}</figcaption>
+				<div class="shot-body">
+					<div class="shot-img"><img src="${url}" alt="">${pins}</div>
+					<ol class="legend">${legend}</ol>
+				</div>
+			</figure>
+		`;
+	};
+
+	return groups.map(([prefix, title]) => `
+		<section class="break">
+			<h2>${guideEscape(title)}</h2>
+			<p class="intro">Les pastilles numérotées renvoient à la légende à côté de chaque capture.</p>
+			${GUIDE_SHOTS.filter(shot => shot.file.includes(`/${prefix}-`)).map(figure).join("")}
+		</section>
+	`).join("");
+}
+
 function guideHtml() {
 	// La date affichée suit le format français, indépendamment de la langue
 	// du navigateur.
@@ -488,6 +532,20 @@ function guideHtml() {
 	.page-block { break-inside: auto; }
 	h3, h2 { break-after: avoid; }
 	section.break { break-before: page; }
+	.shot { margin: 12px 0 18px; break-inside: avoid; }
+	.shot figcaption { margin-bottom: 6px; font-size: 12.5px; font-weight: 700; color: #1d4ed8; }
+	.shot-body { display: flex; gap: 14px; align-items: flex-start; }
+	.shot.window .shot-body { flex-direction: column; }
+	.shot-img { position: relative; flex: none; border: 1px solid #cbd5e1; border-radius: 10px; overflow: hidden; }
+	.shot.phone .shot-img { width: 200px; }
+	.shot.window .shot-img { width: 100%; }
+	.shot-img img { display: block; width: 100%; height: auto; }
+	.pin { position: absolute; display: grid; place-items: center; width: 17px; height: 17px; margin: -8px 0 0 -8px; border-radius: 50%; background: #dc2626; color: #fff; font: 700 10px/1 Helvetica, Arial, sans-serif; font-style: normal; box-shadow: 0 0 0 2px #fff, 0 1px 4px rgba(0,0,0,.4); }
+	.legend { flex: 1; margin: 0; padding: 0; list-style: none; }
+	.shot.window .legend { columns: 2; column-gap: 18px; width: 100%; }
+	.legend li { display: flex; gap: 8px; margin-bottom: 7px; break-inside: avoid; }
+	.legend b { flex: none; display: grid; place-items: center; width: 17px; height: 17px; border-radius: 50%; background: #dc2626; color: #fff; font-size: 10px; }
+
 	footer { margin-top: 24px; color: #94a3b8; font-size: 9.5px; text-align: center; }
 </style>
 </head>
@@ -506,8 +564,10 @@ function guideHtml() {
 
 	${sections}
 
+	${guideShotsHtml()}
+
 	<section class="break">
-		<h2>4. Que se passe-t-il quand on fait une action ?</h2>
+		<h2>5. Que se passe-t-il quand on fait une action ?</h2>
 		<table>
 			${GUIDE_ACTIONS.map(([action, effect]) => `<tr><th>${guideEscape(action)}</th><td>${guideEscape(effect)}</td></tr>`).join("")}
 		</table>
@@ -536,10 +596,18 @@ function downloadGuide() {
 
 	// Nettoie le cadre après l’impression, ou au terme du délai de secours.
 	frame.contentWindow.addEventListener("afterprint", () => frame.remove());
-	window.setTimeout(() => {
+	// Attend le chargement de toutes les captures avant d'imprimer.
+	const images = [...doc.images].map(image => image.complete
+		? Promise.resolve()
+		: new Promise(done => {
+			image.onload = done;
+			image.onerror = done;
+		}));
+
+	Promise.all(images).then(() => window.setTimeout(() => {
 		frame.contentWindow.focus();
 		frame.contentWindow.print();
-	}, 300);
+	}, 300));
 	window.setTimeout(() => frame.remove(), 120000);
 }
 
