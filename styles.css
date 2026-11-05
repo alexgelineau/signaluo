@@ -4973,3 +4973,13 @@ html[data-transitions="off"] .mac-nav .nav-icon {
 	background: #16a34a;
 	box-shadow: 0 0 0 6px #16a34a33, 0 4px 10px #0f172a55;
 }
+
+/* Le bout du doigt sert de repère : l'onde et l'appui partent de ce point */
+.fake-finger {
+	transform-origin: var(--tx, 0) var(--ty, 0);
+}
+
+.fake-finger i {
+	left: calc(var(--tx, 40px) - 30px);
+	top: calc(var(--ty, 30px) - 30px);
+}

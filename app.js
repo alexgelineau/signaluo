@@ -3697,12 +3697,30 @@ function renderPhoneHome(pro = false) {
 	// Le fond d'écran recouvre aussi la barre du haut du téléphone.
 	phoneFrame.classList.add("on-home");
 
-	// Place le faux doigt exactement sur l'icône Signaluo.
+	// Place le bout du doigt (et non son coin) au centre de l'icône Signaluo.
 	const home = app.querySelector(".phone-home");
+	const finger = home.querySelector(".fake-finger");
+	const fingerIcon = finger.querySelector(".ico");
 	const iconBox = home.querySelector(".phone-home-glyph").getBoundingClientRect();
 	const homeBox = home.getBoundingClientRect();
-	home.style.setProperty("--fx", `${iconBox.left - homeBox.left + iconBox.width / 2 - 28}px`);
-	home.style.setProperty("--fy", `${iconBox.top - homeBox.top + iconBox.height / 2 - 4}px`);
+
+	// Le bout de l'index est à environ 1/3 de la largeur et en haut du pictogramme.
+	// Mesure relative : le déplacement de l'animation s'annule dans la différence.
+	const fingerBox = finger.getBoundingClientRect();
+	const svgBox = fingerIcon.getBoundingClientRect();
+	const tipX = svgBox.left - fingerBox.left + svgBox.width * 0.34;
+	const tipY = svgBox.top - fingerBox.top + svgBox.height * 0.1;
+
+	home.style.setProperty("--tx", `${tipX}px`);
+	home.style.setProperty("--ty", `${tipY}px`);
+	home.style.setProperty(
+		"--fx",
+		`${iconBox.left - homeBox.left + iconBox.width / 2 - tipX}px`
+	);
+	home.style.setProperty(
+		"--fy",
+		`${iconBox.top - homeBox.top + iconBox.height / 2 - tipY}px`
+	);
 
 	// Après l'animation du faux doigt, l'application s'ouvre toute seule.
 	window.setTimeout(() => {
