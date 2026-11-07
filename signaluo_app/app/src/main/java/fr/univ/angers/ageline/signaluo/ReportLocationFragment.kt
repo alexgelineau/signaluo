@@ -85,6 +85,11 @@ class ReportLocationFragment : Fragment() {
             binding.mapView.controller.zoomOut()
         }
 
+        binding.btnRotateMap.setOnClickListener {
+            val map = binding.mapView
+            map.mapOrientation = (map.mapOrientation + 45f) % 360f
+        }
+
         binding.btnGpsLocation.setOnClickListener {
             selectGpsLocation()
         }

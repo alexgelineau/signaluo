@@ -92,6 +92,10 @@
 
     <!-- Page 3 Strings -->
     <string name="map_click_instruction">Cliquez sur la carte pour placer le repère</string>
+    <string name="map_required_title">Localisation (obligatoire)</string>
+    <string name="map_zoom_in">Zoom avant</string>
+    <string name="map_zoom_out">Zoom arrière</string>
+    <string name="map_rotate">Tourner la carte de 45 degrés</string>
     <string name="location_option_gps">Utiliser la localisation du téléphone</string>
     <string name="location_option_map">Placer un repère sur la carte</string>
     <string name="location_gps_selected">Position GPS : 47.4712° N, 0.5513° W</string>
@@ -99,8 +103,8 @@
     <string name="toast_map_pin_placed">Repère placé sur la carte</string>
 
     <!-- Page 4 Strings -->
-    <string name="send_option_contact">Envoyer avec mes coordonnées</string>
-    <string name="send_option_anonymous">Envoyer anonymement</string>
+    <string name="send_option_contact">Envoyer avec vos coordonnées</string>
+    <string name="send_option_anonymous">Envoyer sans vos coordonnées</string>
     <string name="hint_lastname">Nom</string>
     <string name="hint_firstname">Prénom</string>
     <string name="hint_email">Adresse e-mail</string>

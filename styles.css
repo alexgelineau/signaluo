@@ -992,6 +992,22 @@ button {
 	font-size: 1.25rem;
 	letter-spacing: -.04em;
 }
+.wizard-topbar {
+	display: grid;
+	grid-template-columns: 36px minmax(0, 1fr) 36px;
+	gap: 8px;
+}
+.wizard-topbar h2 {
+	text-align: center;
+}
+.wizard-required {
+	display: block;
+	margin-top: 4px;
+	color: var(--muted);
+	font-size: .7rem;
+	font-weight: 500;
+	letter-spacing: normal;
+}
 .icon-btn {
 	width: 36px;
 	height: 36px;
@@ -1188,6 +1204,66 @@ button:disabled {
 	color: var(--muted);
 	font-size: .86rem;
 }
+button.wizard-next-unavailable,
+button.wizard-next-unavailable:hover {
+	opacity: .45;
+	cursor: not-allowed;
+	transform: none;
+	transition: none;
+}
+.photo-toast-area {
+	display: grid;
+	flex: 1;
+	align-items: center;
+	min-height: 76px;
+}
+.category-toast-area {
+	position: absolute;
+	right: 0;
+	bottom: 100%;
+	left: 0;
+	z-index: 1;
+}
+.phone-toast {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 12px 14px;
+	border: 1px solid rgba(255, 255, 255, .18);
+	border-radius: 16px;
+	background: rgba(15, 23, 42, .94);
+	color: #fff;
+	box-shadow: 0 12px 32px rgba(15, 23, 42, .3);
+	opacity: 0;
+	pointer-events: none;
+	transform: translateY(12px);
+	transition: opacity .25s ease, transform .25s ease;
+}
+.phone-toast.show {
+	opacity: 1;
+	transform: translateY(0);
+}
+.phone-toast-icon {
+	display: grid;
+	flex: none;
+	place-items: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 11px;
+	background: #fbbf24;
+	color: #1e293b;
+	font-size: 1.1rem;
+}
+.phone-toast-message {
+	font-size: .78rem;
+	font-weight: 600;
+	line-height: 1.4;
+}
+@media (prefers-reduced-motion: reduce) {
+	.phone-toast {
+		transition: none;
+	}
+}
 .photo-preview {
 	width: 100%;
 	height: 190px;
@@ -1242,12 +1318,15 @@ button:disabled {
 .other {
 	background: var(--purple);
 }
-label {
+label,
+.map-title {
 	display: block;
-	margin: 12px 0 6px;
 	color: var(--muted);
 	font-size: .73rem;
 	font-weight: 700;
+}
+label {
+	margin: 12px 0 6px;
 }
 input, textarea {
 	width: 100%;
@@ -1268,6 +1347,12 @@ input:focus, textarea:focus {
 }
 .contact-fields {
 	margin-top: 14px;
+}
+.map-title {
+	margin-top: 16px;
+}
+.map-title + .map {
+	margin-top: 8px;
 }
 .map {
 	position: relative;
@@ -3693,34 +3778,6 @@ body.hide-cursor .phone * {
 	}
 }
 
-.settings-card > .settings-push {
-	margin-top: auto;
-}
-
-/* Ajustements de fin de fichier pour aligner les cartes Paramètres. */
-.settings-data {
-	display: grid;
-	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-	align-items: start;
-	column-gap: 16px;
-}
-
-.settings-data h3,
-.settings-data > p {
-	grid-column: 1 / -1;
-}
-
-.settings-data .danger-zone {
-	margin-top: 0;
-}
-
-/* Empile les données et la zone sensible sur écran étroit. */
-@media (max-width: 900px) {
-	.settings-data {
-		grid-template-columns: minmax(0, 1fr);
-	}
-}
-
 /* Champ e-mail du résumé quotidien, affiché sous l'interrupteur */
 .digest-email {
 	margin-top: 10px;
@@ -4341,23 +4398,40 @@ html[data-transitions="off"] .mac-nav .nav-icon {
 	outline: none;
 }
 
-/* Boutons de zoom arrondis et flottants */
+/* Commandes flottantes communes aux cartes citoyenne, gestion et itinéraire. */
 .map .maplibregl-ctrl-group,
 .admin-map .maplibregl-ctrl-group,
 .route-map .maplibregl-ctrl-group {
 	overflow: hidden;
 	border: 0;
-	border-radius: 14px;
-	background: #ffffffee;
-	box-shadow: 0 6px 16px #0f172a40;
-	backdrop-filter: blur(8px);
+	border-radius: 13px;
+	background: #0f172a;
+	box-shadow: 0 4px 14px rgba(15, 23, 42, .2), 0 0 0 1px rgba(148, 163, 184, .22);
+	backdrop-filter: blur(12px);
 }
 
 .map .maplibregl-ctrl-group button,
 .admin-map .maplibregl-ctrl-group button,
 .route-map .maplibregl-ctrl-group button {
-	width: 34px;
-	height: 34px;
+	width: 38px;
+	height: 38px;
+	color: #fff;
+	cursor: pointer;
+	transition: background-color .18s ease;
+}
+
+.map .maplibregl-ctrl-group button:hover,
+.admin-map .maplibregl-ctrl-group button:hover,
+.route-map .maplibregl-ctrl-group button:hover {
+	background-color: #334155;
+	transform: none;
+}
+
+.map .maplibregl-ctrl-group button:focus-visible,
+.admin-map .maplibregl-ctrl-group button:focus-visible,
+.route-map .maplibregl-ctrl-group button:focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: -3px;
 }
 
 .map .maplibregl-ctrl-top-right,
@@ -4370,23 +4444,45 @@ html[data-transitions="off"] .mac-nav .nav-icon {
 .map .maplibregl-ctrl-top-right .maplibregl-ctrl,
 .admin-map .maplibregl-ctrl-top-right .maplibregl-ctrl,
 .route-map .maplibregl-ctrl-top-right .maplibregl-ctrl {
-	margin: 0 0 8px;
+	margin: 0 0 6px;
 }
 
 .map .map-tilt-btn,
 .admin-map .map-tilt-btn,
 .route-map .map-tilt-btn {
-	width: 34px;
-	height: 34px;
-	color: #1d4ed8;
-	font: 800 12px/1 inherit;
-	cursor: pointer;
+	color: #fff;
+	font-family: inherit;
+	font-size: 12px;
+	font-weight: 800;
+}
+
+.map .map-rotate-btn,
+.admin-map .map-rotate-btn,
+.route-map .map-rotate-btn {
+	display: grid;
+	place-items: center;
+}
+
+.map .map-rotate-btn .ico,
+.admin-map .map-rotate-btn .ico,
+.route-map .map-rotate-btn .ico {
+	width: 19px;
+	height: 19px;
+}
+
+.map .maplibregl-ctrl-zoom-in .maplibregl-ctrl-icon,
+.map .maplibregl-ctrl-zoom-out .maplibregl-ctrl-icon,
+.admin-map .maplibregl-ctrl-zoom-in .maplibregl-ctrl-icon,
+.admin-map .maplibregl-ctrl-zoom-out .maplibregl-ctrl-icon,
+.route-map .maplibregl-ctrl-zoom-in .maplibregl-ctrl-icon,
+.route-map .maplibregl-ctrl-zoom-out .maplibregl-ctrl-icon {
+	filter: brightness(0) invert(1);
 }
 
 .map .maplibregl-ctrl-group button + button,
 .admin-map .maplibregl-ctrl-group button + button,
 .route-map .maplibregl-ctrl-group button + button {
-	border-top: 1px solid #e2e8f0;
+	border-top: 1px solid #475569;
 }
 
 .map .maplibregl-ctrl-attrib,

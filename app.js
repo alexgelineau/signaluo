@@ -341,6 +341,41 @@ function toast(message) {
 	}, 2600);
 }
 
+let wizardToastTimer;
+
+// Affiche un rappel dans le téléphone sans interrompre le formulaire.
+function showWizardToast(message, icon) {
+	const node = app.querySelector("#wizard-toast");
+
+	window.clearTimeout(wizardToastTimer);
+	node.querySelector(".phone-toast-icon").innerHTML = ico(icon);
+	node.querySelector(".phone-toast-message").textContent = message;
+	node.classList.add("show");
+
+	wizardToastTimer = window.setTimeout(hideWizardToast, 3000);
+}
+
+// Retire le rappel lorsque l'utilisateur remplit la condition ou quitte l'étape.
+function hideWizardToast() {
+	window.clearTimeout(wizardToastTimer);
+	const node = app.querySelector("#wizard-toast");
+
+	if (node) {
+		node.classList.remove("show");
+		node.querySelector(".phone-toast-message").textContent = "";
+	}
+}
+
+// Prépare la zone de notification commune aux étapes du formulaire.
+function wizardToastMarkup() {
+	return `
+		<div class="phone-toast" id="wizard-toast" role="status" aria-live="polite">
+			<span class="phone-toast-icon" aria-hidden="true"></span>
+			<span class="phone-toast-message"></span>
+		</div>
+	`;
+}
+
 // ---------------------------------------------------------------------------
 // SECTION : CENTRE DE NOTIFICATIONS (cloche du logiciel de gestion)
 // ---------------------------------------------------------------------------
@@ -1451,11 +1486,20 @@ function renderAdminSettings() {
 				</label>
 			</section>
 			<section class="settings-card">
-				<h3>${ico("book-open")} Documentation</h3>
-				<p class="management-note">Un PDF avec le schéma de fonctionnement du logiciel et des deux applications, l'explication de chaque page et bouton, et ce qui se passe après chaque action.</p>
-				<button type="button" class="settings-export settings-push" data-settings-guide>
-					<span>${ico("file-down")}</span> Télécharger le guide PDF
+				<h3>${ico("database")} Données</h3>
+				<p class="management-note">Exportez vos signalements et employés, ou repartez d'une maquette vierge.</p>
+				<button type="button" class="settings-export" data-settings-export>
+					<span>${ico("download")}</span> Exporter mes données
 				</button>
+				<div class="danger-zone">
+					<div>
+						<strong>Zone sensible</strong>
+						<small>Efface signalements, employés et catégories ajoutés.</small>
+					</div>
+					<button type="button" class="reset-demo" data-settings-reset>
+						<span>${ico("rotate-ccw")}</span> Réinitialiser la démo
+					</button>
+				</div>
 			</section>
 			<section class="settings-card settings-wide">
 				<h3>${ico("palette")} Apparence</h3>
@@ -1485,22 +1529,6 @@ function renderAdminSettings() {
 					<summary>Catégories créées <span>${customCategories.length}</span></summary>
 					<div class="category-chips">${categoryChips}</div>
 				</details>
-			</section>
-			<section class="settings-card settings-wide settings-data">
-				<h3>${ico("database")} Données</h3>
-				<p class="management-note">Exportez vos signalements et employés, ou repartez d'une maquette vierge.</p>
-				<button type="button" class="settings-export" data-settings-export>
-					<span>${ico("download")}</span> Exporter mes données
-				</button>
-				<div class="danger-zone">
-					<div>
-						<strong>Zone sensible</strong>
-						<small>Efface signalements, employés et catégories ajoutés.</small>
-					</div>
-					<button type="button" class="reset-demo" data-settings-reset>
-						<span>${ico("rotate-ccw")}</span> Réinitialiser la démo
-					</button>
-				</div>
 			</section>
 		</div>
 	`;
@@ -1538,7 +1566,7 @@ adminContent.addEventListener("change", event => {
 	}
 });
 
-// Actions de la page paramètres : guide PDF, export, réinitialisation.
+// Actions de la page paramètres : thèmes, export et réinitialisation.
 adminContent.addEventListener("click", event => {
 	// Choix d'un thème : appliqué et enregistré immédiatement.
 	const themeButton = event.target.closest("[data-theme-choice]");
@@ -1552,10 +1580,7 @@ adminContent.addEventListener("click", event => {
 		return;
 	}
 
-	if (event.target.closest("[data-settings-guide]")) {
-		// Téléchargement du guide PDF (si disponible).
-		window.downloadGuide?.();
-	} else if (event.target.closest("[data-settings-export]")) {
+	if (event.target.closest("[data-settings-export]")) {
 		// Export JSON des données, téléchargé via un lien temporaire.
 		const blob = new Blob(
 			[JSON.stringify({ reports, employees, settings }, null, 2)],
@@ -2404,6 +2429,8 @@ function renderHistory() {
 
 // Affiche l'étape courante du parcours de création d'un signalement.
 function renderWizard() {
+	hideWizardToast();
+
 	// Étape 0 : écran de lancement.
 	if (step === 0) {
 		app.innerHTML = `
@@ -2447,9 +2474,13 @@ function renderWizard() {
 	// Affichage de l'étape.
 	app.innerHTML = `
 		<div class="screen">
-			<div class="topbar">
+			<div class="topbar wizard-topbar">
 				${backButton}
-				<h2>${step}. ${titles[step - 1]}</h2>
+				<h2>
+					${step}. ${titles[step - 1]}
+					${step === 1 ? '<small class="wizard-required" id="photo-required">(Photo obligatoire)</small>' : ""}
+					${step === 2 ? '<small class="wizard-required" id="category-required">(Catégorie obligatoire)</small>' : ""}
+				</h2>
 				<button class="icon-btn" data-action="history" title="Historique">${ico("history")}</button>
 			</div>
 			<div class="steps">${progressSteps}</div>
@@ -2482,7 +2513,12 @@ function wizardContent() {
 					<strong>Photo ajoutée</strong>
 				`
 				: `<div style="font-size:4rem">${ico("image")}<strong>Photo ajoutée</strong></div>`
-			: `<div style="font-size:3rem">${ico("camera")}<strong>Aucune photo sélectionnée</strong></div>`;
+			: `
+				<div style="font-size:3rem">
+					${ico("camera")}
+					<strong>Aucune photo sélectionnée</strong>
+				</div>
+			`;
 
 		// Boutons proposés selon qu'une photo existe ou non.
 		const photoActions = draft.photo
@@ -2498,9 +2534,16 @@ function wizardContent() {
 				${photoContent}
 			</div>
 			<input id="gallery-input" type="file" accept="image/*" hidden>
+			${draft.photo ? "" : `
+				<div class="photo-toast-area">
+					${wizardToastMarkup()}
+				</div>
+			`}
 			<div class="actions">
 				${photoActions}
-				<button class="secondary" data-action="next" ${draft.photo ? "" : "disabled"}>
+				<button class="secondary ${draft.photo ? "" : "wizard-next-unavailable"}"
+					data-action="next" type="button"
+					${draft.photo ? "" : 'aria-describedby="photo-required"'}>
 					Suivant
 				</button>
 			</div>
@@ -2527,7 +2570,9 @@ function wizardContent() {
 			<p>Quel type de problème souhaitez-vous signaler ?</p>
 			<div class="categories">${categories}</div>
 			<div class="actions">
-				<button class="primary" data-action="next" ${draft.category ? "" : "disabled"}>
+				<div class="category-toast-area">${wizardToastMarkup()}</div>
+				<button class="primary ${draft.category ? "" : "wizard-next-unavailable"}"
+					data-action="next" type="button" aria-describedby="category-required">
 					Suivant
 				</button>
 			</div>
@@ -2540,7 +2585,8 @@ function wizardContent() {
 			<p>Décrivez le problème et indiquez où il se trouve.</p>
 			<label for="description">Description détaillée (obligatoire)</label>
 			<textarea id="description" required placeholder="Ex. Gros nid de poule au niveau du carrefour, dangereux pour les vélos...">${esc(draft.description)}</textarea>
-			<div id="map" class="map" aria-label="Carte interactive"></div>
+			<span class="map-title" id="map-title">Localisation (obligatoire)</span>
+			<div id="map" class="map" role="region" aria-labelledby="map-title"></div>
 			<button class="secondary" data-action="location">${ico("locate-fixed")} Détecter ma position</button>
 			<p id="location-status" style="margin:9px 0 0;color:var(--green);font-size:.72rem">
 				${ico("check")} ${esc(draft.location || "Position non définie")}
@@ -2574,11 +2620,11 @@ function wizardContent() {
 		<p>Choisissez comment transmettre votre demande à la mairie.</p>
 		<label class="option ${draft.anonymous ? "selected" : ""}">
 			<input type="radio" name="privacy" value="anonymous" ${draft.anonymous ? "checked" : ""}>
-			Envoyer anonymement
+			Envoyer sans vos coordonnées
 		</label>
 		<label class="option ${!draft.anonymous ? "selected" : ""}">
 			<input type="radio" name="privacy" value="contact" ${!draft.anonymous ? "checked" : ""}>
-			Envoyer avec mes coordonnées
+			Envoyer avec vos coordonnées
 		</label>
 		${contactFields}
 		<div class="actions">
@@ -2593,6 +2639,8 @@ function wizardContent() {
 
 // Met à jour visuellement la catégorie choisie sans reconstruire l'écran.
 function updateCategorySelection() {
+	hideWizardToast();
+
 	// Marque comme sélectionné uniquement le bouton de la catégorie choisie.
 	app.querySelectorAll("[data-category]").forEach(categoryButton => {
 		const isSelected = categoryButton.dataset.category === draft.category;
@@ -2684,13 +2732,13 @@ function bindWizard() {
 	});
 }
 
-// Active ou désactive le bouton « Suivant » selon les champs remplis.
+// Actualise le bouton « Suivant » selon les champs remplis.
 function updateWizardNext() {
 	const next = app.querySelector('[data-action="next"]');
 
 	// Étape 2 : une catégorie est requise.
 	if (next && step === 2) {
-		next.disabled = !draft.category;
+		next.classList.toggle("wizard-next-unavailable", !draft.category);
 	}
 
 	// Étape 3 : description et position sont requises.
@@ -2905,16 +2953,64 @@ function createMapTiltControl(map) {
 
 	// Le libellé suit aussi les inclinaisons faites à la main.
 	map.on("pitchend", refresh);
-	setTimeout(refresh);
+	refresh();
 
 	return {
 		onAdd: () => container,
-		onRemove: () => container.remove()
+		onRemove: () => {
+			map.off("pitchend", refresh);
+			container.remove();
+		}
+	};
+}
+
+// Crée un bouton qui fait pivoter la carte de 45 degrés à chaque clic.
+function createMapRotationControl(map) {
+	const container = document.createElement("div");
+	const button = document.createElement("button");
+	let targetBearing = null;
+
+	container.className = "maplibregl-ctrl maplibregl-ctrl-group";
+	button.type = "button";
+	button.className = "map-rotate-btn";
+	button.title = "Tourner la carte de 45 degrés";
+	button.setAttribute("aria-label", button.title);
+	button.innerHTML = ico("rotate-ccw");
+
+	const clearTarget = () => {
+		targetBearing = null;
+	};
+
+	map.on("rotateend", clearTarget);
+
+	button.addEventListener("click", event => {
+		event.stopPropagation();
+		const bearing = map.isRotating() && targetBearing !== null
+			? targetBearing
+			: map.getBearing();
+		const target = bearing + 45;
+
+		map.rotateTo(target, {
+			duration: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+				? 0
+				: 400
+		});
+		targetBearing = target;
+	});
+
+	container.appendChild(button);
+
+	return {
+		onAdd: () => container,
+		onRemove: () => {
+			map.off("rotateend", clearTarget);
+			container.remove();
+		}
 	};
 }
 
 // Crée une carte au même style que celle de l'application utilisateur
-// (vectorielle, inclinée, bâtiments 3D, boutons de zoom et 3D/2D).
+// (vectorielle, inclinée, bâtiments 3D, zoom, rotation et 3D/2D).
 function createAppMap(options) {
 	const map = new maplibregl.Map({
 		style: "https://tiles.openfreemap.org/styles/liberty",
@@ -2929,6 +3025,7 @@ function createAppMap(options) {
 		new maplibregl.NavigationControl({ showCompass: false }),
 		"top-right"
 	);
+	map.addControl(createMapRotationControl(map), "top-right");
 	map.addControl(createMapTiltControl(map), "top-right");
 	map.addControl(
 		new maplibregl.AttributionControl({ compact: true }),
@@ -3402,6 +3499,16 @@ async function showRouteMap(report) {
 		zoom: 15.5
 	});
 
+	// Cadre le trajet immédiatement, sans modifier la vue après le chargement.
+	const bounds = new maplibregl.LngLatBounds(AGENT_START, destination);
+	routeMap.fitBounds(bounds, {
+		padding: { top: 70, bottom: 190, left: 50, right: 50 },
+		maxZoom: 16,
+		pitch: 40,
+		bearing: -12,
+		duration: 0
+	});
+
 	// Repères de départ et d'arrivée.
 	const start = document.createElement("div");
 
@@ -3471,17 +3578,6 @@ async function showRouteMap(report) {
 			paint: { "line-color": "#2563eb", "line-width": 6 }
 		});
 
-		// Cadre départ et arrivée : le zoom reste celui de la carte de
-		// l'application (bâtiments 3D visibles), même si la route fait un détour.
-		const bounds = new maplibregl.LngLatBounds(AGENT_START, destination);
-
-		routeMap.fitBounds(bounds, {
-			padding: { top: 70, bottom: 190, left: 50, right: 50 },
-			maxZoom: 16,
-			pitch: 40,
-			bearing: -12,
-			duration: 700
-		});
 	};
 
 	if (routeMap.isStyleLoaded()) {
@@ -3766,6 +3862,7 @@ function resetActivePhone() {
 
 // Choisit et affiche l'écran correspondant à l'état actuel de l'application.
 function render() {
+	hideWizardToast();
 	updateVersionTabs();
 
 	// Le fond de la fausse page d'accueil n'est actif que sur cet écran.
@@ -3990,6 +4087,16 @@ document.addEventListener("click", event => {
 
 	// Étape suivante.
 	if (action === "next" && step < 4) {
+		if (step === 1 && !draft.photo) {
+			showWizardToast("Une photo est obligatoire pour continuer.", "camera");
+			return;
+		}
+
+		if (step === 2 && !draft.category) {
+			showWizardToast("Une catégorie est obligatoire pour continuer.", "tags");
+			return;
+		}
+
 		step++;
 	}
 
