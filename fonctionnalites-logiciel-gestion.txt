@@ -1,0 +1,330 @@
+SIGNALUO MANAGER - LOGICIEL DE GESTION
+Fonctionnalités et actions des boutons
+=====================================
+
+Ce document présente le logiciel utilisé par la collectivité pour
+consulter les signalements, les transmettre aux services et suivre
+leur traitement. Il décrit les fonctionnalités attendues du logiciel
+terminé, à partir des écrans de la démonstration web.
+
+Les signalements viennent de l'application utilisateur et peuvent être
+transmis aux services et aux agents de la collectivité.
+
+
+1. NAVIGATION ET NOTIFICATIONS
+==============================
+
+Le menu situé à gauche reste accessible sur toutes les pages :
+
+- « Tableau de bord » : ouvre la vue d'ensemble des signalements et
+  de l'activité.
+- « Signalements » : ouvre le centre de suivi et la liste des demandes.
+- « Carte » : affiche les signalements géolocalisés sur une carte.
+- « Employés » : ouvre la gestion des employés et de leurs services.
+- « Paramètres » : ouvre la configuration du logiciel.
+
+La rubrique sélectionnée est mise en évidence dans le menu.
+
+Centre de notifications :
+
+- Cloche en haut de la fenêtre : ouvre ou ferme le panneau des
+  notifications. Une pastille indique le nombre de notifications non
+  lues. L'ouverture du panneau les marque comme lues.
+- « Tout marquer comme lu » : marque toutes les notifications du
+  panneau comme lues.
+- « Tout effacer » : supprime les notifications du panneau.
+- Clic à l'extérieur du panneau : le ferme.
+
+Les notifications peuvent annoncer un nouveau signalement ou une
+intervention traitée, selon les préférences choisies dans les
+paramètres. Elles affichent leur titre, leur contenu et le temps écoulé.
+
+
+2. TABLEAU DE BORD
+==================
+
+Cette page donne une vue d'ensemble de l'activité de la collectivité.
+
+Elle affiche :
+
+- Le nombre total de signalements.
+- Le nombre de signalements reçus, à traiter.
+- Le nombre de signalements envoyés aux services.
+- Le nombre de signalements traités et le pourcentage de résolution.
+- La répartition des signalements par catégorie.
+- Le nombre de signalements reçus pour chacun des sept derniers jours.
+- Le nombre de signalements envoyés mais pas encore pris en charge.
+- Le nombre d'interventions en cours de prise en charge.
+- Le nombre de signalements similaires, de signalements avec photo,
+  d'employés et de services.
+- Les agents ayant traité le plus de signalements.
+
+Ces éléments sont des indicateurs de consultation. Pour agir sur une
+demande, il faut ouvrir « Signalements » dans le menu.
+
+
+3. SIGNALEMENTS - CENTRE DE SUIVI
+==================================
+
+Cette page liste les demandes reçues et permet de les rechercher, de
+les trier, de les transmettre aux services ou de les clôturer.
+
+3.1 Recherche, filtres et tri
+-----------------------------
+
+- Champ « Rechercher… » : filtre la liste à partir du texte saisi.
+  La recherche porte notamment sur le titre, la description, la
+  catégorie, la localisation, les coordonnées du citoyen et les
+  services associés.
+- Liste « Catégorie » : affiche uniquement les signalements de la
+  catégorie choisie.
+- Liste « Service » : affiche les signalements transmis au service
+  choisi.
+- Liste de tri : classe les signalements par « Plus récents »,
+  « Plus anciens », « Catégorie » ou « Plus de similaires ».
+- « À traiter » : affiche les signalements au statut « Reçu ».
+- « Envoyés » : affiche les signalements transmis aux services.
+- « Traités » : affiche les signalements terminés.
+- Un deuxième clic sur le filtre de statut actif retire ce filtre.
+- « Réinitialiser » : efface les filtres et rétablit le tri par défaut,
+  du plus récent au plus ancien.
+
+Le compteur indique le nombre de signalements affichés. Si les filtres
+ne trouvent rien, un message l'indique.
+
+3.2 Consulter un signalement
+---------------------------
+
+- Clic sur une ligne : déplie ou replie les détails de la demande.
+  La ligne résume la catégorie, la description, la date et le statut.
+- La fiche dépliée affiche la description, la localisation, la photo
+  si elle existe, les services destinataires, ainsi que l'agent et la
+  note d'intervention lorsqu'ils sont renseignés.
+
+3.3 Transmettre ou traiter une demande
+--------------------------------------
+
+- « Envoyer » sur un signalement reçu : ouvre une fenêtre permettant
+  de choisir un ou plusieurs services destinataires.
+- Cases des services : permettent de sélectionner les services
+  concernés. Au moins un service doit être choisi.
+- « Envoyer » dans la fenêtre : transmet la demande aux services
+  sélectionnés, puis passe son statut à « Envoyé ». Les agents
+  rattachés aux services concernés peuvent la retrouver dans leur
+  application professionnelle.
+- « Annuler » ou clic sur le fond de la fenêtre : ferme la fenêtre sans
+  transmettre le signalement.
+- Si aucun service n'est coché, un message demande d'en choisir au
+  moins un et la fenêtre reste ouverte.
+
+- « Marquer comme traité » : apparaît sur une demande envoyée et ouvre
+  une confirmation.
+- « Oui, traité » : confirme que l'intervention est terminée et passe
+  le statut du signalement à « Traité ».
+- « Annuler », clic sur le fond ou touche Échap dans la confirmation :
+  ferme la fenêtre sans modifier le statut.
+
+3.4 Signalements similaires
+---------------------------
+
+Les demandes de même catégorie situées à proximité peuvent être
+regroupées. La distance de regroupement se règle dans les paramètres.
+Chaque groupe possède une demande principale et peut contenir
+plusieurs demandes similaires.
+
+- Ligne « similaires » : déplie ou replie les demandes regroupées.
+- « Déclarer comme signalement unique » : sépare la demande choisie du
+  groupe pour qu'elle soit traitée individuellement. Les autres
+  demandes restent disponibles.
+
+Le regroupement aide à repérer des demandes proches ; il ne signifie
+pas automatiquement qu'elles décrivent exactement le même problème.
+
+3.5 Supprimer un signalement
+-----------------------------
+
+- « Supprimer » : ouvre une fenêtre de confirmation.
+- « Supprimer » dans la confirmation : supprime définitivement la
+  demande ; elle disparaît également de l'historique du citoyen.
+- « Annuler », clic sur le fond ou touche Échap : ferme la confirmation
+  sans supprimer la demande.
+
+
+4. CARTE
+========
+
+Cette page situe sur une carte les signalements disposant de
+coordonnées. Le compteur indique combien de demandes sont placées.
+
+La couleur des repères correspond au statut :
+
+- Orange : reçu, à traiter.
+- Violet : envoyé à un service.
+- Vert : traité.
+
+Boutons et actions :
+
+- Clic sur un repère : ouvre une fiche indiquant le statut, la
+  catégorie, la date, le titre, la description et la localisation.
+- « Ouvrir la liste » dans la fiche : ouvre le centre de suivi des
+  signalements. Il s'agit de la liste complète, pas d'une ouverture
+  automatique de la demande sélectionnée.
+- Clic sur une zone de la carte : ferme la fiche ouverte.
+- « + » : rapproche la carte.
+- « - » : éloigne la carte.
+- Bouton de rotation : tourne la carte de 45 degrés à chaque clic.
+- « 3D » / « 2D » : alterne entre une vue inclinée et une vue à plat.
+- Bouton d'attribution : affiche ou replie les informations sur les
+  fournisseurs de la carte.
+
+La carte peut aussi être déplacée pour explorer la collectivité. Si
+elle ne peut pas être chargée, un message le signale.
+
+
+5. EMPLOYÉS
+===========
+
+Cette page permet de consulter et de gérer les agents associés aux
+services. Les employés sont affichés par service : une personne
+rattachée à plusieurs services apparaît dans chaque groupe concerné.
+Le nombre total d'employés apparaît en haut de la page.
+
+5.1 Recherche et filtres
+-----------------------
+
+- Champ « Nom, identifiant ou e-mail… » : recherche un employé à
+  partir de son nom, de son identifiant ou de son adresse e-mail.
+- Liste « Tous les services » : limite la liste au service choisi.
+- « Réinitialiser » : efface la recherche et le filtre de service.
+
+5.2 Ajouter un employé
+----------------------
+
+- Bouton « + » : ouvre la fenêtre « Nouvel employé ».
+- Champ « Nom » : permet de saisir le nom de l'employé ; il est
+  obligatoire.
+- Champ « E-mail » : permet de saisir une adresse e-mail ; il est
+  facultatif.
+- Cases « Services » : permettent de choisir les services de l'agent.
+  Au moins un service est obligatoire.
+- « Ajouter » : crée l'employé et lui attribue automatiquement un
+  identifiant de type EMP-0001. Il peut utiliser cet identifiant dans
+  l'application professionnelle.
+- « Annuler » ou clic sur le fond : ferme la fenêtre sans créer
+  l'employé.
+
+5.3 Consulter, modifier et supprimer
+-----------------------------------
+
+- « Infos » : ouvre une fiche en lecture seule avec l'identifiant, le
+  nom, l'e-mail et les services de l'employé.
+- « Fermer » : ferme la fiche sans modification.
+- « Modifier » : ouvre le formulaire de modification du nom, de l'e-mail
+  et des services. L'identifiant reste affiché mais n'est pas modifié.
+- « Enregistrer » : valide les modifications. Le nom et au moins un
+  service restent obligatoires.
+- « Annuler » ou clic sur le fond : ferme la fenêtre sans enregistrer
+  les modifications.
+- « Supprimer » : ouvre une confirmation de suppression.
+- « Supprimer » dans la confirmation : retire l'employé. Il ne peut
+  alors plus se connecter à l'application professionnelle.
+- « Annuler », clic sur le fond ou touche Échap : abandonne la
+  suppression.
+
+
+6. PARAMÈTRES
+=============
+
+Cette page permet de configurer la collectivité, les notifications,
+l'affichage, les données et les catégories.
+
+6.1 Collectivité
+----------------
+
+- « Nom de la structure » : permet de renseigner le nom de la mairie
+  ou de la collectivité.
+- « E-mail de contact » : permet de renseigner son adresse de contact.
+- « Langue » : permet de choisir le français ou l'anglais pour
+  l'interface.
+
+6.2 Notifications
+-----------------
+
+- Interrupteur « Nouveau signalement » : active ou désactive les
+  alertes lorsqu'un citoyen transmet une nouvelle demande.
+- Interrupteur « Signalement traité » : active ou désactive les alertes
+  lorsqu'un agent termine une intervention.
+- Interrupteur « Résumé quotidien » : active ou désactive l'envoi d'un
+  récapitulatif par e-mail chaque matin.
+- « E-mail de réception du résumé » : apparaît lorsque le résumé
+  quotidien est activé et permet d'indiquer son destinataire.
+
+6.3 Signalements et affichage
+-----------------------------
+
+- « Distance de regroupement » : choisit le rayon utilisé pour
+  rapprocher les demandes similaires de même catégorie : 50, 100,
+  200 ou 500 mètres.
+- « Affichage de la liste » : choisit une présentation « Confortable »
+  ou « Compacte ».
+
+6.4 Données
+-----------
+
+- « Exporter mes données » : télécharge un fichier JSON contenant les
+  signalements, les employés et les paramètres.
+- « Réinitialiser la démo » : dans l'interface de démonstration, ouvre
+  une confirmation avant d'effacer les données de la démonstration.
+  Cette commande concerne la maquette et ne décrit pas une fonction
+  de suppression des données réelles de la collectivité.
+- « Réinitialiser » dans la confirmation : confirme l'effacement des
+  données de démonstration.
+- « Annuler », clic sur le fond ou touche Échap : abandonne l'opération.
+
+6.5 Apparence
+-------------
+
+- Interrupteur « Transitions fluides » : active ou désactive les
+  animations lors des changements de page.
+- « Océan », « Forêt », « Coucher de soleil », « Lavande » et « Nuit » :
+  chaque bouton applique le thème de couleurs correspondant.
+
+6.6 Catégories et services
+--------------------------
+
+Une catégorie créée ici est proposée aux citoyens dans l'application
+utilisateur et devient aussi un service auquel rattacher des employés.
+La catégorie « Autre » reste à la fin de la liste citoyenne.
+
+- Champ « Nouvelle catégorie / service » : permet de saisir son nom.
+- Sélecteur de couleur : permet de choisir sa couleur.
+- « Créer » : ajoute la catégorie et le service associé. Un nom déjà
+  utilisé ou le nom réservé « Autre » est refusé avec un message.
+- « Catégories créées » : déplie ou replie la liste des catégories
+  personnalisées.
+- Pastille de couleur d'une catégorie : permet de modifier sa couleur.
+- Icône crayon : ouvre la fenêtre pour renommer la catégorie.
+- « Renommer » dans la fenêtre : enregistre le nouveau nom et le
+  reporte sur les services des employés et les signalements concernés.
+  Un nom existant ou réservé est refusé.
+- « Annuler » ou clic sur le fond : ferme la fenêtre sans renommer.
+- « × » à côté d'une catégorie : demande sa suppression. La
+  suppression est refusée si des employés sont encore rattachés au
+  service correspondant.
+- « Supprimer » dans la confirmation : retire la catégorie des choix
+  proposés aux citoyens et des services disponibles.
+- « Annuler », clic sur le fond ou touche Échap : abandonne la
+  suppression.
+
+Les modifications des paramètres sont enregistrées lorsqu'elles sont
+effectuées ; les changements d'apparence s'appliquent immédiatement.
+
+
+À SAVOIR
+========
+
+- Ce document décrit le logiciel de gestion, pas le détail des pages
+  de l'application citoyenne ou de l'application professionnelle.
+- Il présente le fonctionnement attendu d'un produit terminé : il
+  ne garantit pas que toutes ces fonctions soient déjà réalisées dans
+  la démonstration.

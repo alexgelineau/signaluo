@@ -1,0 +1,189 @@
+SIGNALUO - APPLICATION UTILISATEUR
+Fonctionnalités et actions des boutons
+=====================================
+
+Ce document présente le parcours citoyen de Signaluo comme une
+application Android terminée. Il décrit les fonctionnalités attendues
+de l'application finale, et non les limites de la démonstration web.
+
+
+1. PHOTO DU PROBLÈME
+====================
+
+Cette page permet d'ajouter la photo du problème à signaler. Une photo
+est obligatoire pour continuer.
+
+Au début, la page indique qu'aucune photo n'est sélectionnée.
+
+Boutons et actions :
+
+- « Prendre une photo » : ouvre l'appareil photo du téléphone. Après la
+  prise et la validation de la photo, celle-ci apparaît en aperçu. Si
+  l'accès à l'appareil photo est demandé, l'utilisateur doit l'autoriser.
+  S'il annule ou refuse l'accès, aucune photo n'est ajoutée.
+
+- « Ajouter depuis la galerie » : ouvre le sélecteur de photos du
+  téléphone. Après le choix d'une image, celle-ci apparaît en aperçu.
+  Si aucun fichier n'est choisi, la page ne change pas. Si le fichier
+  n'est pas une image, un message demande de sélectionner une image.
+
+- « Changer la photo » : apparaît après l'ajout d'une photo. Il retire
+  d'abord l'image sélectionnée et réaffiche les deux boutons permettant
+  de prendre une photo ou d'en choisir une dans la galerie. Il faut
+  ensuite sélectionner une nouvelle image.
+
+- « Suivant » : ouvre la page de choix du type de problème si une photo
+  a été ajoutée. Sinon, un message indique qu'une photo est obligatoire.
+
+- Icône « Historique », en haut à droite : ouvre la liste des
+  signalements. Le brouillon reste en mémoire pendant la navigation.
+
+Les quatre petits repères en haut de la page indiquent la progression
+dans les quatre étapes du signalement.
+
+
+2. TYPE DE PROBLÈME
+===================
+
+Cette page permet de choisir une catégorie. Un seul type de problème
+peut être sélectionné à la fois.
+
+Boutons et actions :
+
+- « Voirie » : sélectionne les problèmes liés à la voirie.
+- « Éclairage » : sélectionne les problèmes d'éclairage.
+- « Propreté » : sélectionne les problèmes de propreté.
+- « Espaces Verts » : sélectionne les problèmes liés aux espaces verts.
+- « Autre » : sélectionne un problème ne correspondant pas aux autres
+  catégories.
+- Une catégorie supplémentaire, si elle a été ajoutée par le
+  gestionnaire : la sélectionne comme type de problème.
+
+La catégorie sélectionnée est mise en évidence. Un clic sur une autre
+catégorie remplace le choix précédent.
+
+- « Suivant » : ouvre la page des détails et de la localisation si une
+  catégorie est sélectionnée. Sinon, un message indique qu'une catégorie
+  est obligatoire.
+- Flèche de retour, en haut à gauche : revient à la page de la photo en
+  conservant le brouillon.
+- Icône « Historique », en haut à droite : ouvre l'historique.
+
+
+3. DÉTAILS ET LOCALISATION
+==========================
+
+Cette page permet de décrire le problème et d'indiquer son emplacement.
+La description et la localisation sont toutes les deux obligatoires.
+
+Champs et actions :
+
+- « Description détaillée » : permet de saisir une description libre
+  du problème. Les espaces au début et à la fin ne comptent pas comme
+  une description.
+
+- Carte : un appui sur un lieu place un repère à cet endroit et
+  sélectionne la position. Un autre appui déplace le repère. La carte
+  se recentre sur le point sélectionné.
+
+- « + » : rapproche la carte.
+- « - » : éloigne la carte.
+- Bouton de rotation : tourne la carte de 45 degrés à chaque appui.
+- « 3D » / « 2D » : alterne entre une vue inclinée et une vue à plat.
+- Bouton d'attribution de la carte : affiche ou replie les informations
+  concernant les fournisseurs de la carte.
+
+- « Détecter ma position » : utilise la localisation du téléphone pour
+  placer le repère à la position actuelle et recentrer la carte. Si
+  l'autorisation de localisation est demandée, l'utilisateur doit
+  l'accorder. Si elle est refusée ou que la position est indisponible,
+  il peut placer le repère manuellement sur la carte.
+
+Après la sélection d'un lieu, l'application cherche son adresse. Si
+elle ne peut pas la trouver, elle affiche les coordonnées géographiques.
+Le chargement de la carte et la recherche d'adresse dépendent de
+services accessibles par Internet.
+
+- « Suivant » : ouvre la page d'envoi. Le bouton est désactivé tant
+  qu'il manque la description ou la localisation.
+- Flèche de retour : revient au choix de la catégorie.
+- Icône « Historique » : ouvre l'historique.
+
+
+4. ENVOI DU SIGNALEMENT
+=======================
+
+Cette page permet de choisir si le signalement est envoyé avec ou sans
+coordonnées personnelles.
+
+Boutons et actions :
+
+- « Envoyer sans vos coordonnées » : sélectionne l'envoi anonyme et
+  masque les champs de contact. C'est l'option sélectionnée par défaut.
+
+- « Envoyer avec vos coordonnées » : affiche les champs Nom, Prénom,
+  Adresse e-mail et Numéro de téléphone.
+
+- Champs de contact : permettent de saisir les coordonnées. Les quatre
+  champs sont obligatoires pour un envoi avec coordonnées. L'adresse
+  e-mail doit être valide et le téléphone doit être un numéro français
+  valide. En cas d'erreur, un message explique ce qu'il faut corriger.
+
+- « Envoyer le signalement » : si les informations demandées sont
+  valides, transmet le signalement à la mairie avec la photo, la
+  catégorie, la description, la position, la date et les coordonnées
+  si elles ont été choisies. Son statut initial est « Reçu ».
+  Lorsque l'envoi réussit, l'application affiche l'écran de
+  confirmation et réinitialise le brouillon. En cas d'échec, elle
+  indique que l'envoi n'a pas abouti et permet de réessayer.
+
+  Le titre utilisé dans la liste est créé automatiquement à partir du
+  début de la description ; il n'y a pas de champ de titre à remplir.
+
+- Flèche de retour : revient aux détails et à la localisation.
+- Icône « Historique » : ouvre l'historique.
+
+5. CONFIRMATION DU SIGNALEMENT
+==============================
+
+La page affiche « Signalement envoyé ! » et un message de remerciement.
+
+Boutons et actions :
+
+- « Faire un nouveau signalement » : revient à la page de la photo avec
+  un nouveau brouillon vide.
+- « Voir mon historique » : ouvre la liste des signalements.
+
+
+6. HISTORIQUE DES SIGNALEMENTS
+==============================
+
+Cette page affiche le nombre de demandes et les signalements du plus
+récent au plus ancien. Chaque carte indique le titre, la localisation,
+la date et la photo ou une icône de catégorie. Si la liste est vide, un
+message le précise.
+
+En mode utilisateur normal, le statut n'est pas affiché sur les cartes
+de cette page.
+
+Boutons et actions :
+
+- Flèche de retour : revient à la page de la photo. Si un brouillon
+  était en cours, ses informations sont conservées en mémoire.
+- « + Nouveau » : revient à la page de la photo et efface le brouillon
+  précédent pour commencer un nouveau signalement.
+- Carte d'un signalement : ouvre une fenêtre avec sa photo ou son
+  icône, son titre, sa catégorie, sa date, sa localisation, sa
+  description et, si elles existent, les coordonnées renseignées.
+- « × » dans la fenêtre de détails : ferme la fenêtre. Un appui sur le
+  fond ou ailleurs dans la fenêtre la ferme également.
+
+
+À SAVOIR
+========
+
+- L'historique permet de retrouver les signalements envoyés.
+- Un brouillon est conservé pendant la navigation entre les pages du
+  formulaire et l'historique.
+- Ce document concerne la version utilisateur ; il ne décrit pas les
+  fonctionnalités des interfaces professionnelle et de gestion.
