@@ -1478,12 +1478,6 @@ function renderAdminSettings() {
 						${["50", "100", "200", "500"].map(value => `<option value="${value}" ${settings.radius === value ? "selected" : ""}>${value} m</option>`).join("")}
 					</select>
 				</label>
-				<label class="setting-field">Affichage de la liste
-					<select data-setting="density">
-						<option value="comfortable" ${settings.density === "comfortable" ? "selected" : ""}>Confortable</option>
-						<option value="compact" ${settings.density === "compact" ? "selected" : ""}>Compact</option>
-					</select>
-				</label>
 			</section>
 			<section class="settings-card">
 				<h3>${ico("database")} Données</h3>
@@ -2010,6 +2004,13 @@ const STATUS_COLORS = {
 	"Traité": "#16a34a"
 };
 
+// Statuts visibles par défaut sur la carte.
+let adminMapStatusFilters = {
+	"Reçu": true,
+	"Envoyé": true,
+	"Traité": true
+};
+
 // Affiche tous les signalements géolocalisés sur une carte.
 function renderAdminMap() {
 	// Seuls les signalements avec coordonnées peuvent être placés.
@@ -2032,12 +2033,32 @@ function renderAdminMap() {
 			<div id="admin-map" class="admin-map"></div>
 			<div class="admin-map-legend">
 				${[["Reçu", "À traiter"], ["Envoyé", "Envoyé"], ["Traité", "Traité"]].map(([name, label]) => `
-					<span><i style="background:${STATUS_COLORS[name]}"></i>${label}</span>
+					<label>
+						<input
+							type="checkbox"
+							data-map-status="${name}"
+							${adminMapStatusFilters[name] ? "checked" : ""}
+						>
+						<i style="background:${STATUS_COLORS[name]}"></i>
+						<span>${label}</span>
+					</label>
 				`).join("")}
 			</div>
 			<div class="admin-map-card" hidden></div>
 		</div>
 	`;
+
+	// Met à jour la visibilité des repères quand un filtre est modifié.
+	adminContent.querySelectorAll("[data-map-status]").forEach(input => {
+		input.addEventListener("change", event => {
+			const status = event.target.dataset.mapStatus;
+
+			if (status) {
+				adminMapStatusFilters[status] = event.target.checked;
+				syncAdminMapPins();
+			}
+		});
+	});
 
 	if (!window.maplibregl) {
 		adminContent.querySelector("#admin-map").textContent
@@ -2091,6 +2112,7 @@ function syncAdminMapPins() {
 	// Seuls les signalements avec coordonnées peuvent être placés.
 	const located = reports.filter(report => (
 		Number.isFinite(report.latitude) && Number.isFinite(report.longitude)
+		&& adminMapStatusFilters[report.status]
 	));
 
 	// Retire les anciens repères.
@@ -2473,7 +2495,7 @@ function renderWizard() {
 
 	// Affichage de l'étape.
 	app.innerHTML = `
-		<div class="screen">
+		<div class="screen ${step === 3 ? "details-step" : ""}">
 			<div class="topbar wizard-topbar">
 				${backButton}
 				<h2>
@@ -2541,7 +2563,7 @@ function wizardContent() {
 			`}
 			<div class="actions">
 				${photoActions}
-				<button class="secondary ${draft.photo ? "" : "wizard-next-unavailable"}"
+				<button class="secondary ${draft.photo ? "wizard-next-available" : "wizard-next-unavailable"}"
 					data-action="next" type="button"
 					${draft.photo ? "" : 'aria-describedby="photo-required"'}>
 					Suivant
@@ -2571,7 +2593,7 @@ function wizardContent() {
 			<div class="categories">${categories}</div>
 			<div class="actions">
 				<div class="category-toast-area">${wizardToastMarkup()}</div>
-				<button class="primary ${draft.category ? "" : "wizard-next-unavailable"}"
+				<button class="primary ${draft.category ? "wizard-next-available" : "wizard-next-unavailable"}"
 					data-action="next" type="button" aria-describedby="category-required">
 					Suivant
 				</button>
@@ -2592,7 +2614,8 @@ function wizardContent() {
 				${ico("check")} ${esc(draft.location || "Position non définie")}
 			</p>
 			<div class="actions">
-				<button class="primary" data-action="next" ${draft.description && draft.location ? "" : "disabled"}>
+				<button class="primary ${draft.description && draft.location ? "wizard-next-available" : ""}"
+					data-action="next" ${draft.description && draft.location ? "" : "disabled"}>
 					Suivant
 				</button>
 			</div>
@@ -2738,12 +2761,18 @@ function updateWizardNext() {
 
 	// Étape 2 : une catégorie est requise.
 	if (next && step === 2) {
-		next.classList.toggle("wizard-next-unavailable", !draft.category);
+		const isAvailable = Boolean(draft.category);
+
+		next.classList.toggle("wizard-next-unavailable", !isAvailable);
+		next.classList.toggle("wizard-next-available", isAvailable);
 	}
 
 	// Étape 3 : description et position sont requises.
 	if (next && step === 3) {
-		next.disabled = !(draft.description && draft.location);
+		const isAvailable = Boolean(draft.description && draft.location);
+
+		next.disabled = !isAvailable;
+		next.classList.toggle("wizard-next-available", isAvailable);
 	}
 }
 
